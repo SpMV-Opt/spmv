@@ -1,4 +1,5 @@
 all:
-	gcc example_read.c mmio.c -o foo
+	g++ main.cpp -o foo
+	g++ -fverbose-asm -O3 -g -S main.cpp
 clean:
-	@rm -f foo
+	@rm -f foo *.s
