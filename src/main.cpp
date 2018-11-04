@@ -1,13 +1,8 @@
 /*
- *   Matrix Market I/O example program
- *
  *   Read a real (non-complex) sparse matrix from a Matrix Market (v. 2.0) file.
- *   and copies it to stdout.  This porgram does nothing useful, but
- *   illustrates common usage of the Matrix Matrix I/O routines.
- *   (See http://math.nist.gov/MatrixMarket for details.)
+ *   and copies it to stdout.
  *
  *   Usage:  a.out [filename] > output
- *
  *
  *   NOTES:
  *
@@ -24,8 +19,8 @@
 
 #include "utils.h"
 
-#include <cstdlib>
 #include <cstdio>
+#include <cstdlib>
 
 int main(int argc, char *argv[]) {
   if (argc < 2) {
