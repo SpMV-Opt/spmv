@@ -17,10 +17,11 @@
  *      when reading doubles, otherwise errors will occur.
  */
 
-#include "utils.h"
-
 #include <cstdio>
 #include <cstdlib>
+
+#include "utils.h"
+#include "spmv_opt.h"
 
 int main(int argc, char *argv[]) {
   if (argc < 2) {
@@ -28,21 +29,47 @@ int main(int argc, char *argv[]) {
     exit(1);
   }
 
-  int M, N, nz;
+  // rows, columns, nz: number of non-zero elems
+  int rows, columns, nz;
+  // I: x-axis row index, J: y-axis column index, val: non-zero value
   int *I, *J;
   double *val;
-  get_matrix_size(argv[1], M, N, nz);
-  printf("%d %d %d\n", M, N, nz);
+
+  // parse matrix size from input matrix market file
+  get_matrix_size(argv[1], rows, columns, nz);
+#ifdef DEBUG
+  fprintf(stdout, "%d %d %d\n", rows, columns, nz);
+#endif
 
   I = (int *)malloc(nz * sizeof(int));
   J = (int *)malloc(nz * sizeof(int));
   val = (double *)malloc(nz * sizeof(double));
 
+  // parse matrix non-zero values from input matrix market file
   get_matrix(argv[1], I, J, val);
 
-  int i;
-  for (i = 0; i < nz; i++)
+  // source vector x random generation
+  double *x = (double*) malloc(columns*sizeof(double));
+  rand_gen(columns, x);
+  // destination vector y for output
+  double *y = (double*) malloc(rows*sizeof(double));
+  std::fill(y, y + rows, 0.0);
+
+#ifdef DEBUG
+  for (int i = 0; i < nz; i++)
     fprintf(stdout, "%d %d %lf\n", I[i], J[i], val[i]);
+#endif
+
+#ifdef NAIVE
+  // naive implement
+  double *A = (double*)malloc(rows * columns * sizeof(double));
+  std::fill(A, A + rows * columns, 0.0);
+  for(int i = 0; i < nz; ++i) {
+    A[I[i] * columns + J[i]] = val[i];
+  }
+  naive(rows, columns, A, x, y);
+  // FIXME: check output correctness
+#endif
 
   return 0;
 }
