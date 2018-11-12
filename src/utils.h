@@ -62,7 +62,7 @@ void get_matrix(const char *file_name, int *I, int *J, double *val) {
 
 // source vector x random generation
 void rand_gen(const int &len, double *x) {
-  std::mt19937 seed;
+  static thread_local std::mt19937 seed;
   std::uniform_real_distribution<> dis(-RAND_MAX, RAND_MAX);
   for (int i = 0; i < len; ++i) {
     x[i] = dis(seed);

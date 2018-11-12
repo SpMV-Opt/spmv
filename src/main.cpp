@@ -74,6 +74,7 @@ int main(int argc, char *argv[]) {
 #endif // NAIVE
 
 #ifdef CSR
+  // FIXME: we assume each row must contain at least one element
   // transform sparse matrix into csr format
   double *nz_vals = (double *)malloc(nz * sizeof(double));
   int *column_index = (int *)malloc(nz * sizeof(int));
@@ -91,7 +92,7 @@ int main(int argc, char *argv[]) {
       }
     }
   }
-  row_start[rows] = rows;
+  row_start[rows] = nz;
 #ifdef DEBUG
   fprintf(stdout, "rows: %d, columns: %d\n", rows, columns);
   fprintf(stdout, "count: %d\n", count);
