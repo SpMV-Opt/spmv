@@ -23,7 +23,7 @@ naive: naive.o main.o
 
 csr: CXX_FLAGS += -D$(DBG_FLAGS) -D$(CSR_IMPL)
 csr: csr.o main.o
-	$(CXX) -o $(NAIVE) $+
+	$(CXX) -o $(CSR) $+
 
 naive.o: naive.cpp
 	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<
@@ -31,7 +31,7 @@ naive.o: naive.cpp
 csr.o: csr.cpp
 	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<
 
-main.o: main.cpp
+main.o: main.cpp utils.h
 	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<
 	#$(CXX) -fverbose-asm -O3 -g -S main.cpp
 

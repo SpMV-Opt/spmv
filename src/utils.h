@@ -66,7 +66,7 @@ void rand_gen(const int &len, double *x) {
   std::uniform_real_distribution<> dis(-RAND_MAX, RAND_MAX);
   for (int i = 0; i < len; ++i) {
     x[i] = dis(seed);
-    fprintf(stdout, "%lf ", x[i]);
+    //fprintf(stdout, "%lf ", x[i]);
   }
 }
 

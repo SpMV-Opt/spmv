@@ -20,8 +20,8 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include "utils.h"
 #include "spmv_opt.h"
+#include "utils.h"
 
 int main(int argc, char *argv[]) {
   if (argc < 2) {
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
   get_matrix_size(argv[1], rows, columns, nz);
 #ifdef DEBUG
   fprintf(stdout, "%d %d %d\n", rows, columns, nz);
-#endif
+#endif // DEBUG
 
   I = (int *)malloc(nz * sizeof(int));
   J = (int *)malloc(nz * sizeof(int));
@@ -49,27 +49,71 @@ int main(int argc, char *argv[]) {
   get_matrix(argv[1], I, J, val);
 
   // source vector x random generation
-  double *x = (double*) malloc(columns*sizeof(double));
+  double *x = (double *)malloc(columns * sizeof(double));
   rand_gen(columns, x);
   // destination vector y for output
-  double *y = (double*) malloc(rows*sizeof(double));
+  double *y = (double *)malloc(rows * sizeof(double));
   std::fill(y, y + rows, 0.0);
 
 #ifdef DEBUG
   for (int i = 0; i < nz; i++)
     fprintf(stdout, "%d %d %lf\n", I[i], J[i], val[i]);
-#endif
+#endif // DEBUG
+
+  // input sparse matrix A
+  double *A = (double *)malloc(rows * columns * sizeof(double));
+  std::fill(A, A + rows * columns, 0.0);
+  for (int i = 0; i < nz; ++i) {
+    A[I[i] * columns + J[i]] = val[i];
+  }
 
 #ifdef NAIVE
   // naive implement
-  double *A = (double*)malloc(rows * columns * sizeof(double));
-  std::fill(A, A + rows * columns, 0.0);
-  for(int i = 0; i < nz; ++i) {
-    A[I[i] * columns + J[i]] = val[i];
-  }
   naive(rows, columns, A, x, y);
   // FIXME: check output correctness
-#endif
+#endif // NAIVE
 
+#ifdef CSR
+  // transform sparse matrix into csr format
+  double *nz_vals = (double *)malloc(nz * sizeof(double));
+  int *column_index = (int *)malloc(nz * sizeof(int));
+  int *row_start = (int *)malloc((rows + 1) * sizeof(int));
+  int count = 0;
+  double element;
+  for (int i = 0; i < rows; ++i) {
+    row_start[i] = count;
+    for (int j = 0; j < columns; ++j) {
+      element = A[i * columns + j];
+      if (element != 0.0) {
+        column_index[count] = j;
+        nz_vals[count] = element;
+        ++count;
+      }
+    }
+  }
+  row_start[rows] = rows;
+#ifdef DEBUG
+  fprintf(stdout, "rows: %d, columns: %d\n", rows, columns);
+  fprintf(stdout, "count: %d\n", count);
+  //row_start[rows] = rows;
+  int i;
+  for(i = 0; i < nz; ++i) {
+    fprintf(stdout, "%lf ", nz_vals[i]);
+  }
+  fprintf(stdout, "\n");
+  for(i = 0; i < nz; ++i) {
+    fprintf(stdout, "%d ", column_index[i]);
+  }
+  fprintf(stdout, "\n");
+  for(i = 0; i < rows + 1; ++i) {
+    fprintf(stdout, "%d ", row_start[i]);
+  }
+  fprintf(stdout, "\n");
+#endif // DEBUG
+
+  csr(rows, nz_vals, column_index, row_start, x, y);
+#endif // CSR
+
+  // memory release
   return 0;
 }
