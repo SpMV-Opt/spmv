@@ -22,7 +22,7 @@ naive: naive.o main.o
 	$(CXX) -o $(NAIVE) $+
 
 csr: CXX_FLAGS += -D$(DBG_FLAGS) -D$(CSR_IMPL)
-csr: csr.o main.o
+csr: csr.o main.o naive.o
 	$(CXX) -o $(CSR) $+
 
 naive.o: naive.cpp

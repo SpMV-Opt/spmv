@@ -66,6 +66,10 @@ int main(int argc, char *argv[]) {
   for (int i = 0; i < nz; ++i) {
     A[I[i] * columns + J[i]] = val[i];
   }
+  // naive implement to check the correctness of other optimizers
+  double *result = (double *)malloc(rows * sizeof(double));
+  std::fill(result, result + rows, 0.0);
+  naive(rows, columns, A, x, result);
 
 #ifdef NAIVE
   // naive implement
@@ -96,23 +100,30 @@ int main(int argc, char *argv[]) {
 #ifdef DEBUG
   fprintf(stdout, "rows: %d, columns: %d\n", rows, columns);
   fprintf(stdout, "count: %d\n", count);
-  //row_start[rows] = rows;
+  // row_start[rows] = rows;
   int i;
-  for(i = 0; i < nz; ++i) {
+  for (i = 0; i < nz; ++i) {
     fprintf(stdout, "%lf ", nz_vals[i]);
   }
   fprintf(stdout, "\n");
-  for(i = 0; i < nz; ++i) {
+  for (i = 0; i < nz; ++i) {
     fprintf(stdout, "%d ", column_index[i]);
   }
   fprintf(stdout, "\n");
-  for(i = 0; i < rows + 1; ++i) {
+  for (i = 0; i < rows + 1; ++i) {
     fprintf(stdout, "%d ", row_start[i]);
   }
   fprintf(stdout, "\n");
 #endif // DEBUG
-
+  // CSR implement
   csr(rows, nz_vals, column_index, row_start, x, y);
+  // check CSR correctness
+  if (check(rows, y, result)) {
+    fprintf(stdout, "PASS\n");
+  } else {
+    for (int i = 0; i < rows; ++i)
+      fprintf(stdout, "y: %lf result: %lf\n", y[i], result[i]);
+  }
 #endif // CSR
 
   // memory release
