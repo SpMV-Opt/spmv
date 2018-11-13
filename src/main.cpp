@@ -124,8 +124,18 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < rows; ++i)
       fprintf(stdout, "y: %lf result: %lf\n", y[i], result[i]);
   }
+  free(nz_vals);
+  free(column_index);
+  free(row_start);
 #endif // CSR
 
   // memory release
+  free(I);
+  free(J);
+  free(val);
+  free(A);
+  free(x);
+  free(y);
+  free(result);
   return 0;
 }
