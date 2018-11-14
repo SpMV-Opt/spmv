@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
   naive(rows, columns, A, x, result);
 
 #ifdef NAIVE
-  // naive implement
+  // 1. naive implement
   naive(rows, columns, A, x, y);
   // FIXME: check output correctness
 #endif // NAIVE
@@ -83,23 +83,10 @@ int main(int argc, char *argv[]) {
   double *nz_vals = (double *)malloc(nz * sizeof(double));
   int *column_index = (int *)malloc(nz * sizeof(int));
   int *row_start = (int *)malloc((rows + 1) * sizeof(int));
-  int count = 0;
-  double element;
-  for (int i = 0; i < rows; ++i) {
-    row_start[i] = count;
-    for (int j = 0; j < columns; ++j) {
-      element = A[i * columns + j];
-      if (element != 0.0) {
-        column_index[count] = j;
-        nz_vals[count] = element;
-        ++count;
-      }
-    }
-  }
-  row_start[rows] = nz;
+  cvt2csr(rows, columns, nz, A, nz_vals, column_index, row_start);
+
 #ifdef DEBUG
   fprintf(stdout, "rows: %d, columns: %d\n", rows, columns);
-  fprintf(stdout, "count: %d\n", count);
   // row_start[rows] = rows;
   int i;
   for (i = 0; i < nz; ++i) {
@@ -115,7 +102,7 @@ int main(int argc, char *argv[]) {
   }
   fprintf(stdout, "\n");
 #endif // DEBUG
-  // CSR implement
+  // 2. CSR implement
   csr(rows, nz_vals, column_index, row_start, x, y);
   // check CSR correctness
   if (check(rows, y, result)) {
@@ -123,11 +110,34 @@ int main(int argc, char *argv[]) {
   } else {
     for (int i = 0; i < rows; ++i)
       fprintf(stdout, "y: %lf result: %lf\n", y[i], result[i]);
+    fprintf(stdout, "FAILED\n");
   }
   free(nz_vals);
   free(column_index);
   free(row_start);
 #endif // CSR
+
+#ifdef CSC
+  // transform sparse matrix into csc format
+  double *nz_vals = (double *)malloc(nz * sizeof(double));
+  int *row_index = (int *)malloc(nz * sizeof(int));
+  int *column_start = (int *)malloc((columns + 1) * sizeof(int));
+  cvt2csc(rows, columns, nz, A, nz_vals, row_index, column_start);
+  // 3. CSC implement
+  csc(rows, nz_vals, row_index, column_start, x, y);
+  // check CSC correctness
+  if (check(rows, y, result)) {
+    fprintf(stdout, "PASS\n");
+  } else {
+    for (int i = 0; i < rows; ++i)
+      fprintf(stdout, "y: %lf result: %lf\n", y[i], result[i]);
+    fprintf(stdout, "FAILED\n");
+  }
+  free(nz_vals);
+  free(row_index);
+  free(column_start);
+
+#endif // CSC
 
   // memory release
   free(I);

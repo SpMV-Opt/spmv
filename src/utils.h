@@ -1,5 +1,5 @@
 /*
- * Common utilities for matrix market file parser.
+ * Common utilities.
  *
  */
 #ifndef _UTILS_H_
@@ -11,6 +11,7 @@
 #include <fstream>
 #include <random>
 #include <string>
+#include <vector>
 
 #define RANDOM_MAX 99
 #define ESP 1e-6
@@ -66,20 +67,58 @@ void rand_gen(const int &len, double *x) {
   std::uniform_real_distribution<> dis(-RAND_MAX, RAND_MAX);
   for (int i = 0; i < len; ++i) {
     x[i] = dis(seed);
-    //fprintf(stdout, "%lf ", x[i]);
+    // fprintf(stdout, "%lf ", x[i]);
   }
 }
 
 // check the correctness of optimizer output and naive result
 bool check(const size_t &len, double *output, double *result) {
   bool pass = true;
-  for(std::size_t i = 0; i < len; ++i) {
-    if((output[i] - result[i]) > ESP) {
-        pass = false;
-        break;
+  for (std::size_t i = 0; i < len; ++i) {
+    if ((output[i] - result[i]) > ESP) {
+      pass = false;
+      break;
     }
   }
   return pass;
+}
+
+// convert the input matrix into csr format
+void cvt2csr(const int &rows, const int &columns, const int &nz, double *A,
+             double *nz_vals, int *column_index, int *row_start) {
+  int count = 0;
+  double element;
+  for (int i = 0; i < rows; ++i) {
+    row_start[i] = count;
+    for (int j = 0; j < columns; ++j) {
+      element = A[i * columns + j];
+      if (element != 0.0) {
+        column_index[count] = j;
+        nz_vals[count] = element;
+        ++count;
+      }
+    }
+  }
+  row_start[rows] = nz;
+}
+
+// convert the input matrix into csc format
+void cvt2csc(const int &rows, const int &columns, const int &nz, double *A,
+             double *nz_vals, int *row_index, int *column_start) {
+  int count = 0;
+  double element;
+  for (int j = 0; j < columns; ++j) {
+    column_start[j] = count;
+    for (int i = 0; i < rows; ++i) {
+      element = A[i * columns + j];
+      if (element != 0.0) {
+        row_index[count] = i;
+        nz_vals[count] = element;
+        ++count;
+      }
+    }
+  }
+  column_start[columns] = nz;
 }
 
 #endif // _UTILS_H_
