@@ -9,18 +9,22 @@
 // y: destination vector, it has M x 1 doule elements
 void csr(const int &M, float *nz_vals, int *column_index, int *row_start,
          float *x, float *y) {
-  float y0;
+  float tmp;
   int i, j;
 #ifdef CSR_OMP
-  #pragma omp parallel for
+#pragma omp parallel for default(shared) private(i, j, tmp)
 #endif // CSR_OMP
   // loop over the rows of sparse matrix
   for (i = 0; i < M; ++i) {
-    y0 = y[i];
+    tmp = 0;
+#ifdef CSR_OMP
+    // hint compiler to ignore vector dependencies
+    #pragma IVDEP
+#endif // CSR_OMP
     for (j = row_start[i]; j < row_start[i + 1]; ++j) {
-      y0 += nz_vals[j] * x[column_index[j]];
+      tmp += nz_vals[j] * x[column_index[j]];
     }
-    y[i] = y0;
+    y[i] = tmp;
   }
 }
 

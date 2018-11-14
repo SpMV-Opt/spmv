@@ -69,4 +69,5 @@ main.o: main.cpp utils.h
 
 clean:
 	@rm -f $(NAIVE) $(CSR) $(CSC) *.o *.s
+	@rm -f $(CSR_OMP) $(CSC_OMP)
 
