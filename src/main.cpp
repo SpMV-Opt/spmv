@@ -91,8 +91,7 @@ int main(int argc, char *argv[]) {
   float *nz_vals = (float *)malloc(nz * sizeof(float));
   int *column_index = (int *)malloc(nz * sizeof(int));
   int *row_start = (int *)malloc((rows + 1) * sizeof(int));
-  //cvt2csr(rows, columns, nz, A, nz_vals, column_index, row_start);
-  cvt2csr(rows, columns, nz, records, nz_vals, column_index, row_start);
+  cvt2csr(rows, nz, records, nz_vals, column_index, row_start);
 
 #ifdef DEBUG
   fprintf(stdout, "rows: %d, columns: %d\n", rows, columns);

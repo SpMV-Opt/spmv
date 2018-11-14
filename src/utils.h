@@ -126,40 +126,39 @@ bool check(const size_t &len, float *output, float *result) {
   return pass;
 }
 
-void cvt2csr(const int &rows, const int &columns, const int &nz,
-             record_t *records, float *nz_vals, int *column_index,
-             int *row_start) {
-  record_t *tmp = (record_t *)malloc(columns * sizeof(record_t));
-  if (!tmp) {
-    fprintf(stdout, "%s:%d fail to malloc tmp!\n", __FILE__, __LINE__);
-    return;
-  }
-  int row_count = 1, row_offset = 0;
-  int row_cur = records[0].i;
+void cvt2csr(const int &rows, const int &nz, record_t *records, float *nz_vals,
+             int *column_index, int *row_start) {
+  // FIXME: we assume each row contains at least one element
+  int k;
+  int one_row_count = 1;
   row_start[0] = 0;
-  tmp[0] = records[0];
-  // FIXME: we assume nz >= 1
-  for (int k = 1; k < nz; ++k) {
-    if (row_cur == records[k].i) {
-      tmp[row_count] = records[k];
-      row_cur = records[k].i;
-      ++row_count;
+  int cur_offset = 0;
+  for (k = 1; k < nz; ++k) {
+    if (records[k].i == records[k - 1].i) {
+      ++one_row_count;
     } else {
-      // get row_start
-      ++row_offset;
-      row_start[row_offset] = row_start[row_offset - 1] + row_count;
-      // sort column index by j
-      std::sort(tmp, tmp + row_count, cmp_key_j);
-      // get column_index and nz_vals
-      for (int m = 0; m < row_count; ++m) {
-        column_index[k - row_count + m] = tmp[m].j;
-        nz_vals[k - row_count + m] = tmp[m].nz_val;
-      } // end for
-      row_count = 1;
-    }   // end else
-  }     // end for
+      ++cur_offset;
+      row_start[cur_offset] = row_start[cur_offset - 1] + one_row_count;
+      one_row_count = 1;
+    }
+  }
   row_start[rows] = nz;
-  free(tmp);
+  int m;
+  // sort and get column index and non-zero values
+  for (k = 0; k < rows; ++k) {
+    one_row_count = row_start[k + 1] - row_start[k];
+    record_t *tmp = (record_t *)malloc(one_row_count * sizeof(record_t));
+    for (m = 0; m < one_row_count; ++m) {
+      tmp[m] = records[row_start[k] + m];
+    }
+    // sort by column
+    std::sort(tmp, tmp + one_row_count, cmp_key_j);
+    for (m = 0; m < one_row_count; ++m) {
+      column_index[row_start[k] + m] = tmp[m].j;
+      nz_vals[row_start[k] + m] = tmp[m].nz_val;
+    }
+    free(tmp);
+  }
 }
 
 #if 0
