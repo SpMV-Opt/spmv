@@ -12,6 +12,7 @@ void csr(const int &M, float *nz_vals, int *column_index, int *row_start,
   float y0;
   int i, j;
 #ifdef CSR_OMP
+  #pragma omp parallel for
 #endif // CSR_OMP
   // loop over the rows of sparse matrix
   for (i = 0; i < M; ++i) {

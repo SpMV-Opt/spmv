@@ -3,18 +3,22 @@ CXX := g++
 
 # Compiler flags
 CXX_FLAGS := -std=c++11
-DBG_FLAGS := DEBUG
-NAIVE_IMPL := NAIVE
-CSR_IMPL := CSR
-CSC_IMPL := CSC
-COLUMN_BLOCK_CSR_IMPL := COLUMN_BLOCK_CSR
-ROW_BLOCK_CSR_IMPL := ROW_BLOCK_CSR
-CACHE_BLOCK_IMPL := CACHE_BLOCK
+DBG_FLAGS := -DDEBUG
+NAIVE_IMPL := -DNAIVE
+CSR_IMPL := -DCSR
+CSC_IMPL := -DCSC
+CSR_OMP_IMPL := -DCSR_OMP
+CSC_OMP_IMPL := -DCSC_OMP
+COLUMN_BLOCK_CSR_IMPL := -DCOLUMN_BLOCK_CSR
+ROW_BLOCK_CSR_IMPL := -DROW_BLOCK_CSR
+CACHE_BLOCK_IMPL := -DCACHE_BLOCK
 
 # Targets
 NAIVE := naive
 CSR := csr
 CSC := csc
+CSR_OMP := csr_omp
+CSC_OMP := csc_omp
 COL_BLK_CSR := cloumn_csr
 ROW_BLK_CSR := row_csr
 CACHE_BLOCK := cache-block
@@ -23,19 +27,27 @@ CACHE_BLOCK := cache-block
 INC := .
 
 # Rules
-naive: CXX_FLAGS += -D$(DBG_FLAGS) -D$(NAIVE_IMPL)
+naive: CXX_FLAGS += $(DBG_FLAGS) $(NAIVE_IMPL)
 naive: naive.o main.o
 	$(CXX) -o $(NAIVE) $+
 
-csr: CXX_FLAGS += -D$(DBG_FLAGS) -D$(CSR_IMPL)
+csr: CXX_FLAGS += $(DBG_FLAGS) $(CSR_IMPL)
 csr: csr.o main.o naive.o
 	$(CXX) -o $(CSR) $+
 
-csc: CXX_FLAGS += -D$(DBG_FLAGS) -D$(CSC_IMPL)
+csr-omp: CXX_FLAGS += $(DBG_FLAGS) $(CSR_OMP_IMPL)
+csr-omp: csr.o main.o naive.o
+	$(CXX) -o $(CSR_OMP) $+
+
+csc: CXX_FLAGS += $(DBG_FLAGS) $(CSC_IMPL)
 csc: csc.o main.o naive.o
 	$(CXX) -o $(CSC) $+
 
-column-csr: CXX_FLAGS += -D$(DBG_FLAGS) -D$(COLUMN_BLOCK_CSR_IMPL)
+csc-omp: CXX_FLAGS += $(DBG_FLAGS) $(CSC_OMP_IMPL)
+csc-omp: csc.o main.o naive.o
+	$(CXX) -o $(CSC_OMP) $+
+
+column-csr: CXX_FLAGS += $(DBG_FLAGS) $(COLUMN_BLOCK_CSR_IMPL)
 column-csr: csr_column_block.o main.o naive.o
 	$(CXX) -o $(COL_BLK_CSR) $+
 

@@ -48,6 +48,18 @@ int main(int argc, char *argv[]) {
   // parse matrix non-zero values from input matrix market file
   get_matrix(argv[1], I, J, val);
 
+  record_t *records = (record_t*)malloc(nz * sizeof(record_t));
+  if(!records)
+    fprintf(stdout, "ERROR! Fail to malloc records!\n");
+  // parse matrix non-zero values from input matrix market file
+  get_records(argv[1], records);
+  // reorder the records with increase order by the row
+  records_reorder_by_rows(nz, records);
+  fprintf(stdout, "After sort:\n");
+  for(int i = 0; i< nz; ++i) {
+    fprintf(stdout, "%d %d %f\n", records[i].i, records[i].j, records[i].nz_val);
+  }
+
   // source vector x random generation
   float *x = (float *)malloc(columns * sizeof(float));
   rand_gen(columns, x);
@@ -55,17 +67,13 @@ int main(int argc, char *argv[]) {
   float *y = (float *)malloc(rows * sizeof(float));
   std::fill(y, y + rows, 0.0);
 
-#ifdef DEBUG
-  for (int i = 0; i < nz; i++)
-    fprintf(stdout, "%d %d %lf\n", I[i], J[i], val[i]);
-#endif // DEBUG
-
   // input sparse matrix A
   float *A = (float *)malloc(rows * columns * sizeof(float));
   std::fill(A, A + rows * columns, 0.0);
   for (int i = 0; i < nz; ++i) {
     A[I[i] * columns + J[i]] = val[i];
   }
+
   // naive implement to check the correctness of other optimizers
   float *result = (float *)malloc(rows * sizeof(float));
   std::fill(result, result + rows, 0.0);
@@ -83,20 +91,22 @@ int main(int argc, char *argv[]) {
   float *nz_vals = (float *)malloc(nz * sizeof(float));
   int *column_index = (int *)malloc(nz * sizeof(int));
   int *row_start = (int *)malloc((rows + 1) * sizeof(int));
-  cvt2csr(rows, columns, nz, A, nz_vals, column_index, row_start);
+  //cvt2csr(rows, columns, nz, A, nz_vals, column_index, row_start);
+  cvt2csr(rows, columns, nz, records, nz_vals, column_index, row_start);
 
 #ifdef DEBUG
   fprintf(stdout, "rows: %d, columns: %d\n", rows, columns);
   // row_start[rows] = rows;
   int i;
+  fprintf(stdout, "non-zero values:\n");
   for (i = 0; i < nz; ++i) {
     fprintf(stdout, "%lf ", nz_vals[i]);
   }
-  fprintf(stdout, "\n");
+  fprintf(stdout, "\ncolumn index:\n");
   for (i = 0; i < nz; ++i) {
     fprintf(stdout, "%d ", column_index[i]);
   }
-  fprintf(stdout, "\n");
+  fprintf(stdout, "\nrow start:\n");
   for (i = 0; i < rows + 1; ++i) {
     fprintf(stdout, "%d ", row_start[i]);
   }
@@ -144,6 +154,7 @@ int main(int argc, char *argv[]) {
   free(J);
   free(val);
   free(A);
+  free(records);
   free(x);
   free(y);
   free(result);
