@@ -32,23 +32,23 @@ naive: naive.o main.o
 	$(CXX) -o $(NAIVE) $+
 
 csr: CXX_FLAGS += $(DBG_FLAGS) $(CSR_IMPL)
-csr: csr.o main.o naive.o
+csr: csr.o main.o #naive.o
 	$(CXX) -o $(CSR) $+
 
 csr-omp: CXX_FLAGS += $(DBG_FLAGS) $(CSR_OMP_IMPL)
-csr-omp: csr.o main.o naive.o
+csr-omp: csr.o main.o #naive.o
 	$(CXX) -o $(CSR_OMP) $+
 
 csc: CXX_FLAGS += $(DBG_FLAGS) $(CSC_IMPL)
-csc: csc.o main.o naive.o
+csc: csc.o main.o #naive.o
 	$(CXX) -o $(CSC) $+
 
 csc-omp: CXX_FLAGS += $(DBG_FLAGS) $(CSC_OMP_IMPL)
-csc-omp: csc.o main.o naive.o
+csc-omp: csc.o main.o #naive.o
 	$(CXX) -o $(CSC_OMP) $+
 
 column-csr: CXX_FLAGS += $(DBG_FLAGS) $(COLUMN_BLOCK_CSR_IMPL)
-column-csr: csr_column_block.o main.o naive.o
+column-csr: csr_column_block.o main.o #naive.o
 	$(CXX) -o $(COL_BLK_CSR) $+
 
 naive.o: naive.cpp

@@ -145,7 +145,7 @@ void cvt2csr(const int &rows, const int &nz, record_t *records, float *nz_vals,
   }
   row_start[0] = 0;
   for (i = 1; i < rows + 1; ++i) {
-    row_start[i] = row_start[i-1] + row_tmp[i-1];
+    row_start[i] = row_start[i - 1] + row_tmp[i - 1];
   }
   free(row_tmp);
   row_start[rows] = nz;
@@ -183,7 +183,7 @@ void cvt2csc(const int &columns, const int &nz, record_t *records,
   column_start[0] = 0;
   column_start[1] = col_tmp[0] + column_start[0];
   for (i = 1; i < columns + 1; ++i) {
-    column_start[i] = column_start[i-1] + col_tmp[i-1];
+    column_start[i] = column_start[i - 1] + col_tmp[i - 1];
   }
   free(col_tmp);
   column_start[columns] = nz;
