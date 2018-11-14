@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
   int rows, columns, nz;
   // I: x-axis row index, J: y-axis column index, val: non-zero value
   int *I, *J;
-  double *val;
+  float *val;
 
   // parse matrix size from input matrix market file
   get_matrix_size(argv[1], rows, columns, nz);
@@ -43,16 +43,16 @@ int main(int argc, char *argv[]) {
 
   I = (int *)malloc(nz * sizeof(int));
   J = (int *)malloc(nz * sizeof(int));
-  val = (double *)malloc(nz * sizeof(double));
+  val = (float *)malloc(nz * sizeof(float));
 
   // parse matrix non-zero values from input matrix market file
   get_matrix(argv[1], I, J, val);
 
   // source vector x random generation
-  double *x = (double *)malloc(columns * sizeof(double));
+  float *x = (float *)malloc(columns * sizeof(float));
   rand_gen(columns, x);
   // destination vector y for output
-  double *y = (double *)malloc(rows * sizeof(double));
+  float *y = (float *)malloc(rows * sizeof(float));
   std::fill(y, y + rows, 0.0);
 
 #ifdef DEBUG
@@ -61,13 +61,13 @@ int main(int argc, char *argv[]) {
 #endif // DEBUG
 
   // input sparse matrix A
-  double *A = (double *)malloc(rows * columns * sizeof(double));
+  float *A = (float *)malloc(rows * columns * sizeof(float));
   std::fill(A, A + rows * columns, 0.0);
   for (int i = 0; i < nz; ++i) {
     A[I[i] * columns + J[i]] = val[i];
   }
   // naive implement to check the correctness of other optimizers
-  double *result = (double *)malloc(rows * sizeof(double));
+  float *result = (float *)malloc(rows * sizeof(float));
   std::fill(result, result + rows, 0.0);
   naive(rows, columns, A, x, result);
 
@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
 #ifdef CSR
   // FIXME: we assume each row must contain at least one element
   // transform sparse matrix into csr format
-  double *nz_vals = (double *)malloc(nz * sizeof(double));
+  float *nz_vals = (float *)malloc(nz * sizeof(float));
   int *column_index = (int *)malloc(nz * sizeof(int));
   int *row_start = (int *)malloc((rows + 1) * sizeof(int));
   cvt2csr(rows, columns, nz, A, nz_vals, column_index, row_start);
@@ -119,12 +119,12 @@ int main(int argc, char *argv[]) {
 
 #ifdef CSC
   // transform sparse matrix into csc format
-  double *nz_vals = (double *)malloc(nz * sizeof(double));
+  float *nz_vals = (float *)malloc(nz * sizeof(float));
   int *row_index = (int *)malloc(nz * sizeof(int));
   int *column_start = (int *)malloc((columns + 1) * sizeof(int));
   cvt2csc(rows, columns, nz, A, nz_vals, row_index, column_start);
   // 3. CSC implement
-  csc(rows, nz_vals, row_index, column_start, x, y);
+  csc(columns, nz_vals, row_index, column_start, x, y);
   // check CSC correctness
   if (check(rows, y, result)) {
     fprintf(stdout, "PASS\n");

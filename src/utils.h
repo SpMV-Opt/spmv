@@ -35,7 +35,7 @@ void get_matrix_size(const char *file_name, int &M, int &N, int &nz) {
 }
 
 // nz: number of non-zero elems, I: x-axis, J: y-axis, val: value
-void get_matrix(const char *file_name, int *I, int *J, double *val) {
+void get_matrix(const char *file_name, int *I, int *J, float *val) {
   std::ifstream in;
   in.open(file_name);
   if (!in.is_open()) {
@@ -53,7 +53,7 @@ void get_matrix(const char *file_name, int *I, int *J, double *val) {
 
   int i = 0;
   while (std::getline(in, line) && line != "") {
-    sscanf(line.c_str(), "%d %d %lf", &I[i], &J[i], &val[i]);
+    sscanf(line.c_str(), "%d %d %f", &I[i], &J[i], &val[i]);
     I[i] -= 1;
     J[i] -= 1;
     ++i;
@@ -62,7 +62,7 @@ void get_matrix(const char *file_name, int *I, int *J, double *val) {
 }
 
 // source vector x random generation
-void rand_gen(const int &len, double *x) {
+void rand_gen(const int &len, float *x) {
   static thread_local std::mt19937 seed;
   std::uniform_real_distribution<> dis(-RAND_MAX, RAND_MAX);
   for (int i = 0; i < len; ++i) {
@@ -72,7 +72,7 @@ void rand_gen(const int &len, double *x) {
 }
 
 // check the correctness of optimizer output and naive result
-bool check(const size_t &len, double *output, double *result) {
+bool check(const size_t &len, float *output, float *result) {
   bool pass = true;
   for (std::size_t i = 0; i < len; ++i) {
     if ((output[i] - result[i]) > ESP) {
@@ -84,10 +84,10 @@ bool check(const size_t &len, double *output, double *result) {
 }
 
 // convert the input matrix into csr format
-void cvt2csr(const int &rows, const int &columns, const int &nz, double *A,
-             double *nz_vals, int *column_index, int *row_start) {
+void cvt2csr(const int &rows, const int &columns, const int &nz, float *A,
+             float *nz_vals, int *column_index, int *row_start) {
   int count = 0;
-  double element;
+  float element;
   for (int i = 0; i < rows; ++i) {
     row_start[i] = count;
     for (int j = 0; j < columns; ++j) {
@@ -103,10 +103,10 @@ void cvt2csr(const int &rows, const int &columns, const int &nz, double *A,
 }
 
 // convert the input matrix into csc format
-void cvt2csc(const int &rows, const int &columns, const int &nz, double *A,
-             double *nz_vals, int *row_index, int *column_start) {
+void cvt2csc(const int &rows, const int &columns, const int &nz, float *A,
+             float *nz_vals, int *row_index, int *column_start) {
   int count = 0;
-  double element;
+  float element;
   for (int j = 0; j < columns; ++j) {
     column_start[j] = count;
     for (int i = 0; i < rows; ++i) {

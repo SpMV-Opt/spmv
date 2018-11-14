@@ -5,12 +5,14 @@
 
 // M: rows of sparse matrix
 // nz_vals: non-zero elements of sparse matrix
-// x: source vector, it has N x 1 double elements
+// x: source vector, it has N x 1 float elements
 // y: destination vector, it has M x 1 doule elements
-void csr(const int &M, double *nz_vals, int *column_index, int *row_start,
-         double *x, double *y) {
-  double y0;
+void csr(const int &M, float *nz_vals, int *column_index, int *row_start,
+         float *x, float *y) {
+  float y0;
   int i, j;
+#ifdef CSR_OMP
+#endif // CSR_OMP
   // loop over the rows of sparse matrix
   for (i = 0; i < M; ++i) {
     y0 = y[i];
