@@ -18,13 +18,13 @@
 #define ESP 1e-6
 
 typedef struct {
-  int i, j;     // rows and columns
-  float nz_val; // non-zero float value
+  int r, c;  // rows and columns
+  float val; // non-zero float value
 } record_t;
 
-bool cmp_key_i(const record_t &a, const record_t &b) { return a.i < b.i; }
+bool cmp_key_row(const record_t &a, const record_t &b) { return a.r < b.r; }
 
-bool cmp_key_j(const record_t &a, const record_t &b) { return a.j < b.j; }
+bool cmp_key_column(const record_t &a, const record_t &b) { return a.c < b.c; }
 
 // M: rows, N: columns, nz: number of non-zero elems
 void get_matrix_size(const char *file_name, int &M, int &N, int &nz) {
@@ -91,9 +91,9 @@ void get_records(const char *file_name, record_t *records) {
   int count = 0;
   record_t tmp;
   while (std::getline(in, line) && line != "") {
-    sscanf(line.c_str(), "%d %d %f", &tmp.i, &tmp.j, &tmp.nz_val);
-    tmp.i -= 1;
-    tmp.j -= 1;
+    sscanf(line.c_str(), "%d %d %f", &tmp.r, &tmp.c, &tmp.val);
+    tmp.r -= 1;
+    tmp.c -= 1;
     records[count] = tmp;
     ++count;
   }
@@ -101,7 +101,11 @@ void get_records(const char *file_name, record_t *records) {
 }
 
 void records_reorder_by_rows(const int &nz, record_t *records) {
-  std::sort(records, records + nz, cmp_key_i);
+  std::sort(records, records + nz, cmp_key_row);
+}
+
+void records_reorder_by_columns(const int &nz, record_t *records) {
+  std::sort(records, records + nz, cmp_key_column);
 }
 
 // source vector x random generation
@@ -128,34 +132,76 @@ bool check(const size_t &len, float *output, float *result) {
 
 void cvt2csr(const int &rows, const int &nz, record_t *records, float *nz_vals,
              int *column_index, int *row_start) {
-  // FIXME: we assume each row contains at least one element
-  int k;
-  int one_row_count = 1;
-  row_start[0] = 0;
-  int cur_offset = 0;
-  for (k = 1; k < nz; ++k) {
-    if (records[k].i == records[k - 1].i) {
-      ++one_row_count;
-    } else {
-      ++cur_offset;
-      row_start[cur_offset] = row_start[cur_offset - 1] + one_row_count;
-      one_row_count = 1;
-    }
+  // TODO: fill with a bit map
+  int *row_tmp = (int *)malloc(rows * sizeof(int));
+  if (!row_tmp) {
+    fprintf(stdout, "%s:%d, Fail to malloc tmp!\n", __FILE__, __LINE__);
+    return;
   }
+  std::fill(row_tmp, row_tmp + rows, 0);
+  int i;
+  for (i = 0; i < nz; ++i) {
+    ++row_tmp[records[i].r];
+  }
+  row_start[0] = 0;
+  for (i = 1; i < rows + 1; ++i) {
+    row_start[i] = row_start[i-1] + row_tmp[i-1];
+  }
+  free(row_tmp);
   row_start[rows] = nz;
-  int m;
+  int j, one_row_count;
   // sort and get column index and non-zero values
-  for (k = 0; k < rows; ++k) {
-    one_row_count = row_start[k + 1] - row_start[k];
+  for (i = 0; i < rows; ++i) {
+    one_row_count = row_start[i + 1] - row_start[i];
     record_t *tmp = (record_t *)malloc(one_row_count * sizeof(record_t));
-    for (m = 0; m < one_row_count; ++m) {
-      tmp[m] = records[row_start[k] + m];
+    for (j = 0; j < one_row_count; ++j) {
+      tmp[j] = records[row_start[i] + j];
     }
     // sort by column
-    std::sort(tmp, tmp + one_row_count, cmp_key_j);
-    for (m = 0; m < one_row_count; ++m) {
-      column_index[row_start[k] + m] = tmp[m].j;
-      nz_vals[row_start[k] + m] = tmp[m].nz_val;
+    std::sort(tmp, tmp + one_row_count, cmp_key_column);
+    for (j = 0; j < one_row_count; ++j) {
+      column_index[row_start[i] + j] = tmp[j].c;
+      nz_vals[row_start[i] + j] = tmp[j].val;
+    }
+    free(tmp);
+  }
+}
+
+void cvt2csc(const int &columns, const int &nz, record_t *records,
+             float *nz_vals, int *row_index, int *column_start) {
+  // TODO: fill with a bit map
+  int *col_tmp = (int *)malloc(columns * sizeof(int));
+  if (!col_tmp) {
+    fprintf(stdout, "%s:%d, Fail to malloc tmp!\n", __FILE__, __LINE__);
+    return;
+  }
+  std::fill(col_tmp, col_tmp + columns, 0);
+  int i;
+  for (i = 0; i < nz; ++i) {
+    ++col_tmp[records[i].c];
+  }
+  column_start[0] = 0;
+  column_start[1] = col_tmp[0] + column_start[0];
+  for (i = 1; i < columns + 1; ++i) {
+    column_start[i] = column_start[i-1] + col_tmp[i-1];
+  }
+  free(col_tmp);
+  column_start[columns] = nz;
+
+  int j;
+  int one_column_count;
+  // sort and get column index and non-zero values
+  for (i = 0; i < columns; ++i) {
+    one_column_count = column_start[i + 1] - column_start[i];
+    record_t *tmp = (record_t *)malloc(one_column_count * sizeof(record_t));
+    for (j = 0; j < one_column_count; ++j) {
+      tmp[j] = records[column_start[i] + j];
+    }
+    // sort by row
+    std::sort(tmp, tmp + one_column_count, cmp_key_row);
+    for (j = 0; j < one_column_count; ++j) {
+      row_index[column_start[i] + j] = tmp[j].r;
+      nz_vals[column_start[i] + j] = tmp[j].val;
     }
     free(tmp);
   }
@@ -180,7 +226,6 @@ void cvt2csr(const int &rows, const int &columns, const int &nz, float *A,
   }
   row_start[rows] = nz;
 }
-#endif
 
 // convert the input matrix into csc format
 void cvt2csc(const int &rows, const int &columns, const int &nz, float *A,
@@ -200,5 +245,6 @@ void cvt2csc(const int &rows, const int &columns, const int &nz, float *A,
   }
   column_start[columns] = nz;
 }
+#endif // 0
 
 #endif // _UTILS_H_

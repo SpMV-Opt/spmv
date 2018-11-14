@@ -53,12 +53,6 @@ int main(int argc, char *argv[]) {
     fprintf(stdout, "ERROR! Fail to malloc records!\n");
   // parse matrix non-zero values from input matrix market file
   get_records(argv[1], records);
-  // reorder the records with increase order by the row
-  records_reorder_by_rows(nz, records);
-  fprintf(stdout, "After sort:\n");
-  for(int i = 0; i< nz; ++i) {
-    fprintf(stdout, "%d %d %f\n", records[i].i, records[i].j, records[i].nz_val);
-  }
 
   // source vector x random generation
   float *x = (float *)malloc(columns * sizeof(float));
@@ -82,20 +76,24 @@ int main(int argc, char *argv[]) {
 #ifdef NAIVE
   // 1. naive implement
   naive(rows, columns, A, x, y);
-  // FIXME: check output correctness
 #endif // NAIVE
 
 #ifdef CSR
-  // FIXME: we assume each row must contain at least one element
+  // reorder the records with increase order by the row
+  records_reorder_by_rows(nz, records);
+  fprintf(stdout, "After sort:\n");
+  for(int i = 0; i< nz; ++i) {
+    fprintf(stdout, "%d %d %f\n", records[i].r, records[i].c, records[i].val);
+  }
   // transform sparse matrix into csr format
   float *nz_vals = (float *)malloc(nz * sizeof(float));
   int *column_index = (int *)malloc(nz * sizeof(int));
   int *row_start = (int *)malloc((rows + 1) * sizeof(int));
+  std::fill(row_start, row_start+(rows + 1), 0);
   cvt2csr(rows, nz, records, nz_vals, column_index, row_start);
 
 #ifdef DEBUG
   fprintf(stdout, "rows: %d, columns: %d\n", rows, columns);
-  // row_start[rows] = rows;
   int i;
   fprintf(stdout, "non-zero values:\n");
   for (i = 0; i < nz; ++i) {
@@ -127,11 +125,37 @@ int main(int argc, char *argv[]) {
 #endif // CSR
 
 #ifdef CSC
+  // reorder the records with increase order by the row
+  records_reorder_by_columns(nz, records);
+  fprintf(stdout, "After sort:\n");
+  for(int i = 0; i< nz; ++i) {
+    fprintf(stdout, "%d %d %f\n", records[i].r, records[i].c, records[i].val);
+  }
   // transform sparse matrix into csc format
   float *nz_vals = (float *)malloc(nz * sizeof(float));
   int *row_index = (int *)malloc(nz * sizeof(int));
+  std::fill(row_index, row_index + nz, 0);
   int *column_start = (int *)malloc((columns + 1) * sizeof(int));
-  cvt2csc(rows, columns, nz, A, nz_vals, row_index, column_start);
+  std::fill(column_start, column_start + (columns + 1), 0);
+  cvt2csc(columns, nz, records, nz_vals, row_index, column_start);
+#ifdef DEBUG
+  fprintf(stdout, "rows: %d, columns: %d\n", rows, columns);
+  int i;
+  fprintf(stdout, "non-zero values:\n");
+  for (i = 0; i < nz; ++i) {
+    fprintf(stdout, "%lf ", nz_vals[i]);
+  }
+  fprintf(stdout, "\nrow index:\n");
+  for (i = 0; i < nz; ++i) {
+    fprintf(stdout, "%d ", row_index[i]);
+  }
+  fprintf(stdout, "\ncolumn start:\n");
+  for (i = 0; i < columns + 1; ++i) {
+    fprintf(stdout, "%d ", column_start[i]);
+  }
+  fprintf(stdout, "\n");
+#endif // DEBUG
+
   // 3. CSC implement
   csc(columns, nz_vals, row_index, column_start, x, y);
   // check CSC correctness
