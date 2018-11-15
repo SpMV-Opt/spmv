@@ -5,12 +5,12 @@
 
 // N: columns of sparse matrix
 // nz_vals: non-zero elements of sparse matrix
-// x: source vector, it has N x 1 float elements
+// x: source vector, it has N x 1 double elements
 // y: destination vector, it has M x 1 doule elements
-void csc(const int &N, float *nz_vals, int *row_index, int *column_start,
-         float *x, float *y) {
+void csc(const int &N, double *nz_vals, int *row_index, int *column_start,
+         double *x, double *y) {
   int i, j;
-  float tmp;
+  double tmp;
 #ifdef CSC_OMP
 #pragma omp parallel for default(shared) private(i, j, tmp)
 #endif // CSC_OMP

@@ -5,11 +5,11 @@
 
 // M: rows of sparse matrix
 // nz_vals: non-zero elements of sparse matrix
-// x: source vector, it has N x 1 float elements
+// x: source vector, it has N x 1 double elements
 // y: destination vector, it has M x 1 doule elements
-void csr(const int &M, float *nz_vals, int *column_index, int *row_start,
-         float *x, float *y) {
-  float tmp;
+void csr(const int &M, double *nz_vals, int *column_index, int *row_start,
+         double *x, double *y) {
+  double tmp;
   int i, j;
 #ifdef CSR_OMP
 #pragma omp parallel for default(shared) private(i, j, tmp)

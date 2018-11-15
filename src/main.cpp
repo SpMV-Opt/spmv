@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
   // I: x-axis row index, J: y-axis column index, val: non-zero value
   int *I, *J;
 #endif
-  float *val;
+  double *val;
 
   // parse matrix size from input matrix market file
   get_matrix_size(argv[1], rows, columns, nz);
@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
     fprintf(stdout, "%s:%d, fail to malloc J!\n", __FILE__, __LINE__);
     exit(-1);
   }
-  val = (float *)malloc(nz * sizeof(float));
+  val = (double *)malloc(nz * sizeof(double));
   if(!val){
     fprintf(stdout, "%s:%d, fail to malloc val!\n", __FILE__, __LINE__);
     exit(-1);
@@ -73,14 +73,14 @@ int main(int argc, char *argv[]) {
   get_records(argv[1], records);
 
   // source vector x random generation
-  float *x = (float *)malloc(columns * sizeof(float));
+  double *x = (double *)malloc(columns * sizeof(double));
   if (!x) {
     fprintf(stdout, "%s:%d, fail to malloc x!\n", __FILE__, __LINE__);
     exit(-1);
   }
   rand_gen(columns, x);
   // destination vector y for output
-  float *y = (float *)malloc(rows * sizeof(float));
+  double *y = (double *)malloc(rows * sizeof(double));
   if (!y) {
     fprintf(stdout, "%s:%d, fail to malloc y!\n", __FILE__, __LINE__);
     exit(-1);
@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
 
 #if 0
   // input sparse matrix A
-  float *A = (float *)malloc(rows * columns * sizeof(float));
+  double *A = (double *)malloc(rows * columns * sizeof(double));
   if(!A) {
     fprintf(stdout, "%s:%d, fail to malloc A!\n", __FILE__, __LINE__);
     exit(-1);
@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
   }
 
   // naive implement to check the correctness of other optimizers
-  float *result = (float *)malloc(rows * sizeof(float));
+  double *result = (double *)malloc(rows * sizeof(double));
   if(!result) {
     fprintf(stdout, "%s:%d, fail to malloc result!\n", __FILE__, __LINE__);
     exit(-1);
@@ -124,7 +124,7 @@ int main(int argc, char *argv[]) {
     fprintf(stdout, "%d %d %f\n", records[i].r, records[i].c, records[i].val);
   }
   // transform sparse matrix into csr format
-  float *nz_vals = (float *)malloc(nz * sizeof(float));
+  double *nz_vals = (double *)malloc(nz * sizeof(double));
   if (!nz_vals) {
     fprintf(stdout, "%s:%d, fail to malloc nz_vals!\n", __FILE__, __LINE__);
     exit(-1);
@@ -185,7 +185,7 @@ int main(int argc, char *argv[]) {
     fprintf(stdout, "%d %d %f\n", records[i].r, records[i].c, records[i].val);
   }
   // transform sparse matrix into csc format
-  float *nz_vals = (float *)malloc(nz * sizeof(float));
+  double *nz_vals = (double *)malloc(nz * sizeof(double));
   if (!nz_vals) {
     fprintf(stdout, "%s:%d, fail to malloc nz_vals!\n", __FILE__, __LINE__);
     exit(-1);
