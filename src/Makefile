@@ -26,10 +26,12 @@ CACHE_BLOCK := cache-block
 # Include directories
 INC := .
 
+PAPI_LIB := papi
+
 # Rules
 naive: CXX_FLAGS += $(DBG_FLAGS) $(NAIVE_IMPL)
 naive: naive.o main.o
-	$(CXX) -o $(NAIVE) $+
+	$(CXX) -o $(NAIVE) $+ -l$(PAPI_LIB)
 
 csr: CXX_FLAGS += $(DBG_FLAGS) $(CSR_IMPL)
 csr: csr.o main.o #naive.o
@@ -64,7 +66,7 @@ csr_column_block.o: csr_column_block.cpp
 	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<
 
 main.o: main.cpp utils.h
-	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<
+	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $< 
 	#$(CXX) -fverbose-asm -O3 -g -S main.cpp
 
 clean:

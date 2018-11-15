@@ -19,23 +19,43 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 
 #include "spmv_opt.h"
 #include "utils.h"
+#include "papi.h"
+
+//handle papi test_fail 
+static void test_fail(const char *file, int line, const char *call, int retval);
 
 int main(int argc, char *argv[]) {
   if (argc < 2) {
     fprintf(stderr, "Usage: %s [martix-market-filename]\n", argv[0]);
     exit(1);
   }
+  
+  //papi performance numbers 
+  float real_time, proc_time, mflops; 
+  long long flpins;
+  int retval;
 
+  long long counters[4];
+  int PAPI_events[] = {
+      PAPI_TOT_CYC, //total cycles
+      PAPI_L2_DCM,  //level 2 data cache misses
+      PAPI_L2_DCA,   //level 2 data cache accesses
+    //  PAPI_FP_OPS
+  };
   // rows, columns, nz: number of non-zero elems
   int rows, columns, nz;
 #if 0
   // I: x-axis row index, J: y-axis column index, val: non-zero value
   int *I, *J;
 #endif
-  float *val;
+  double *val;
+  
+  //init papi lib
+  PAPI_library_init(PAPI_VER_CURRENT);
 
   // parse matrix size from input matrix market file
   get_matrix_size(argv[1], rows, columns, nz);
@@ -95,6 +115,14 @@ int main(int argc, char *argv[]) {
     exit(-1);
   }
   std::fill(A, A + rows * columns, 0.0);
+  double *y = (double *)malloc(rows * sizeof(double));
+  std::fill_n(y, rows, 0.0);
+
+#ifdef DEBUG
+  //for (int i = 0; i < nz; i++)
+  //  fprintf(stdout, "%d %d %lf\n", I[i], J[i], val[i]);
+#endif // DEBUG
+
   for (int i = 0; i < nz; ++i) {
     A[I[i] * columns + J[i]] = val[i];
   }
@@ -114,6 +142,29 @@ int main(int argc, char *argv[]) {
   // 1. naive implement
   naive(rows, columns, A, x, y);
 #endif
+ 
+  //Setup PAPI library and begin collecting data from the counters 
+  //if((retval=PAPI_flops( &real_time, &proc_time, &flpins, &mflops))<PAPI_OK)
+  //  test_fail(__FILE__, __LINE__, "PAPI_flops", retval);
+ 
+  retval = PAPI_start_counters(PAPI_events, 3);
+  // naive implement
+  naive(rows, columns, A, x, y);
+ 
+  retval = PAPI_read_counters(counters, 3);
+
+  printf("%lld L2 cache misses (%.3lf%% misses) in %lld cycles\n", counters[1], (double)counters[1]/(double)counters[2], counters[0]); 
+  //printf("FLOPS: %lld\n", counters[3]);
+  // FIXME: check output correctness
+  
+  //Collect the data into the variables passed in */
+  //if((retval=PAPI_flops( &real_time, &proc_time, &flpins, &mflops))<PAPI_OK)
+  //  test_fail(__FILE__, __LINE__, "PAPI_flops", retval);
+  
+ // printf("Real_time:\t%f\nProc_time:\t%f\nTotal flpins:\t%lld\nMFLOPS:\t\t%f\n",
+ // real_time, proc_time, flpins, mflops);
+ // printf("%s\tPASSED\n", __FILE__);
+ // PAPI_shutdown();
 #endif // NAIVE
 
 #ifdef CSR
@@ -160,8 +211,12 @@ int main(int argc, char *argv[]) {
   }
   fprintf(stdout, "\n");
 #endif // DEBUG
+  retval = PAPI_start_counters(PAPI_events, 3);
   // 2. CSR implement
   csr(rows, nz_vals, column_index, row_start, x, y);
+  
+  retval = PAPI_read_counters(counters, 3);
+  printf("%lld L2 cache misses (%.3lf%% misses) in %lld cycles\n", counters[1], (double)counters[1]/(double)counters[2], counters[0]); 
 #if 0
   // check CSR correctness
   if (check(rows, y, result)) {
@@ -171,7 +226,7 @@ int main(int argc, char *argv[]) {
       fprintf(stdout, "y: %lf result: %lf\n", y[i], result[i]);
     fprintf(stdout, "FAILED\n");
   }
-#endif
+#endif // 0
   free(nz_vals);
   free(column_index);
   free(row_start);
@@ -252,4 +307,23 @@ int main(int argc, char *argv[]) {
   free(x);
   free(y);
   return 0;
+}
+
+static void test_fail(const char *file, int line, const char *call, int retval){
+    printf("%s\tFAILED\nLine # %d\n", file, line);
+    if ( retval == PAPI_ESYS ) {
+        char buf[128];
+        memset( buf, '\0', sizeof(buf) );
+        sprintf(buf, "System error in %s:", call );
+        perror(buf);
+    }
+    else if ( retval > 0 ) {
+        printf("Error calculating: %s\n", call );
+    }
+    else {
+        printf("Error in %s: %s\n", call, PAPI_strerror(retval) );
+    }
+    printf("\n");
+    exit(1);
+
 }
