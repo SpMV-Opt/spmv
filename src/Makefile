@@ -1,8 +1,16 @@
 # Compliler
 CXX := g++
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	OMP_CXX := g++
+endif
+ifeq ($(UNAME_S),Darwin)
+	OMP_CXX := g++-8
+endif
 
 # Compiler flags
 CXX_FLAGS := -std=c++11
+OMP_FLAGS := -fopenmp
 DBG_FLAGS := -DDEBUG
 NAIVE_IMPL := -DNAIVE
 CSR_IMPL := -DCSR
@@ -32,23 +40,23 @@ naive: naive.o main.o
 	$(CXX) -o $(NAIVE) $+
 
 csr: CXX_FLAGS += $(DBG_FLAGS) $(CSR_IMPL)
-csr: csr.o main.o #naive.o
+csr: csr.o main.o naive.o
 	$(CXX) -o $(CSR) $+
 
 csr-omp: CXX_FLAGS += $(DBG_FLAGS) $(CSR_OMP_IMPL)
-csr-omp: csr.o main.o #naive.o
-	$(CXX) -o $(CSR_OMP) $+
+csr-omp: csr_omp.o main.o naive.o
+	$(OMP_CXX) $(OMP_FLAGS) -o $(CSR_OMP) $+
 
 csc: CXX_FLAGS += $(DBG_FLAGS) $(CSC_IMPL)
-csc: csc.o main.o #naive.o
+csc: csc.o main.o naive.o
 	$(CXX) -o $(CSC) $+
 
 csc-omp: CXX_FLAGS += $(DBG_FLAGS) $(CSC_OMP_IMPL)
-csc-omp: csc.o main.o #naive.o
-	$(CXX) -o $(CSC_OMP) $+
+csc-omp: csc_omp.o main.o naive.o
+	$(OMP_CXX) $(OMP_FLAGS) -o $(CSC_OMP) $+
 
 column-csr: CXX_FLAGS += $(DBG_FLAGS) $(COLUMN_BLOCK_CSR_IMPL)
-column-csr: csr_column_block.o main.o #naive.o
+column-csr: csr_column_block.o main.o naive.o
 	$(CXX) -o $(COL_BLK_CSR) $+
 
 naive.o: naive.cpp
@@ -58,6 +66,12 @@ csr.o: csr.cpp
 	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<
 
 csc.o: csc.cpp
+	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<
+
+csr_omp.o: csr_omp.cpp
+	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<
+
+csc_omp.o: csc_omp.cpp
 	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<
 
 csr_column_block.o: csr_column_block.cpp

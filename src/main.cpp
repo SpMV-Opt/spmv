@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
 
   // rows, columns, nz: number of non-zero elems
   int rows, columns, nz;
-#if 0
+#if 1
   // I: x-axis row index, J: y-axis column index, val: non-zero value
   int *I, *J;
 #endif
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
   fprintf(stdout, "%d %d %d\n", rows, columns, nz);
 #endif // DEBUG
 
-#if 0
+#if 1
   I = (int *)malloc(nz * sizeof(int));
   if(!I) {
     fprintf(stdout, "%s:%d, fail to malloc I!\n", __FILE__, __LINE__);
@@ -87,7 +87,7 @@ int main(int argc, char *argv[]) {
   }
   std::fill(y, y + rows, 0.0);
 
-#if 0
+#if 1
   // input sparse matrix A
   double *A = (double *)malloc(rows * columns * sizeof(double));
   if(!A) {
@@ -110,7 +110,7 @@ int main(int argc, char *argv[]) {
 #endif
 
 #ifdef NAIVE
-#if 0
+#if 1
   // 1. naive implement
   naive(rows, columns, A, x, y);
 #endif
@@ -162,7 +162,7 @@ int main(int argc, char *argv[]) {
 #endif // DEBUG
   // 2. CSR implement
   csr(rows, nz_vals, column_index, row_start, x, y);
-#if 0
+#if 1
   // check CSR correctness
   if (check(rows, y, result)) {
     fprintf(stdout, "PASS\n");
@@ -224,7 +224,7 @@ int main(int argc, char *argv[]) {
 
   // 3. CSC implement
   csc(columns, nz_vals, row_index, column_start, x, y);
-#if 0
+#if 1
   // check CSC correctness
   if (check(rows, y, result)) {
     fprintf(stdout, "PASS\n");
@@ -241,7 +241,7 @@ int main(int argc, char *argv[]) {
 #endif // CSC
 
   // memory release
-#if 0
+#if 1
   free(I);
   free(J);
   free(val);

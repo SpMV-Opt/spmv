@@ -2,6 +2,7 @@
  *   CSR(Compressed Sparse Row) format for sparse matrix.
  *
  */
+#include <omp.h>
 
 // M: rows of sparse matrix
 // nz_vals: non-zero elements of sparse matrix
@@ -11,6 +12,7 @@ void csr(const int &M, double *nz_vals, int *column_index, int *row_start,
          double *x, double *y) {
   double tmp;
   int i, j;
+  #pragma omp parallel for default(shared) private(i, j, tmp)
   // loop over the rows of sparse matrix
   for (i = 0; i < M; ++i) {
     tmp = 0;
