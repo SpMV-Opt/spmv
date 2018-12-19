@@ -19,15 +19,48 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
+#include <cassert>
+#include <papi.h>
+#include <sys/time.h>
 
 #include "spmv_opt.h"
 #include "utils.h"
+
+#define NUM_EVENTS 3
+
+// handle papi test_fail 
+static void test_fail(const char *file, int line, const char *call, int retval);
 
 int main(int argc, char *argv[]) {
   if (argc < 2) {
     fprintf(stderr, "Usage: %s [martix-market-filename]\n", argv[0]);
     exit(1);
   }
+
+  // perf wall time
+  struct timeval begin, end;
+  double time_elapsed = 0.0;
+
+#ifdef PAPI
+  // papi performance numbers
+  float real_time, proc_time, mflops; 
+  long long flpins;
+  int retval;
+  long long counters[NUM_EVENTS];
+  int PAPI_events[] = {
+    PAPI_TOT_CYC, // total cycles
+    PAPI_L2_DCM,  // level 2 data cache misses
+    PAPI_L2_DCA,  // level 2 data cache accesses
+    //PAPI_FP_OPS
+  };
+
+  // init papi lib
+  if ((retval = PAPI_library_init(PAPI_VER_CURRENT)) != PAPI_VER_CURRENT) {
+    fprintf(stdout, "PAPI_library_init Error!\n");
+    exit(-1);
+  }
+#endif // PAPI
 
   // rows, columns, nz: number of non-zero elems
   int rows, columns, nz;
@@ -96,7 +129,15 @@ int main(int argc, char *argv[]) {
   }
   std::fill(result, result + rows, 0.0);
   // 1. naive implement
+  //retval = PAPI_start_counters(PAPI_events, NUM_EVENTS);
+  gettimeofday(&begin, NULL);
   naive(rows, columns, A, x, result);
+  gettimeofday(&end, NULL);
+  //retval = PAPI_read_counters(counters, NUM_EVENTS);
+  time_elapsed = (double)(end.tv_sec - begin.tv_sec)+ (end.tv_usec - begin.tv_usec)/1000000.0; 
+  printf("Naive impl wall time: %.3lf ms \n", time_elapsed);
+  //assert(retval == PAPI_OK);
+  //printf("Naive impl perf: L2 cache miss %lld, L2 cache misses ratio: %.3lf %, in %lld cycles\n", counters[1], (double)counters[1]/(double)counters[2] * 100, counters[0]); 
 #endif // RESULT_VERIFY
   /// ==========================================================
 
@@ -157,7 +198,15 @@ int main(int argc, char *argv[]) {
   fprintf(stdout, "\n");
 #endif // DEBUG
   // 2. CSR implement
+  //retval = PAPI_start_counters(PAPI_events, NUM_EVENTS);
+  gettimeofday(&begin, NULL);
   csr(rows, nz_vals, column_index, row_start, x, y);
+  gettimeofday(&end, NULL);
+  //retval = PAPI_read_counters(counters, NUM_EVENTS);
+  time_elapsed = (double)(end.tv_sec - begin.tv_sec)+ (end.tv_usec - begin.tv_usec)/1000000.0; 
+  printf("CSR / CSR OMP impl wall time: %.3lf ms \n", time_elapsed);
+  //assert(retval == PAPI_OK);
+  //printf("CSR / CSR OMP impl perf: L2 cache miss %lld, L2 cache misses ratio: %.3lf %, in %lld cycles\n", counters[1], (double)counters[1]/(double)counters[2] * 100, counters[0]); 
 #ifdef RESULT_VERIFY
   // check CSR correctness
   if (check(rows, y, result)) {
@@ -224,7 +273,15 @@ int main(int argc, char *argv[]) {
 #endif // DEBUG
 
   // 3. CSC implement
+  //retval = PAPI_start_counters(PAPI_events, NUM_EVENTS);
+  gettimeofday(&begin, NULL);
   csc(columns, nz_vals, row_index, column_start, x, y);
+  gettimeofday(&end, NULL);
+  //retval = PAPI_read_counters(counters, NUM_EVENTS);
+  //assert(retval == PAPI_OK);
+  time_elapsed = (double)(end.tv_sec - begin.tv_sec)+ (end.tv_usec - begin.tv_usec)/1000000.0; 
+  printf("CSC / CSC OMP impl wall time: %.3lf ms \n", time_elapsed);
+  //printf("CSC / CSC OMP impl perf: L2 cache miss %lld, L2 cache misses ratio: %.3lf %, in %lld cycles\n", counters[1], (double)counters[1]/(double)counters[2] * 100, counters[0]); 
 #ifdef RESULT_VERIFY
   // check CSC correctness
   if (check(rows, y, result)) {
@@ -253,4 +310,22 @@ int main(int argc, char *argv[]) {
   free(x);
   free(y);
   return 0;
+}
+
+static void test_fail(const char *file, int line, const char *call, int retval) {
+  printf("%s\tFAILED\nLine # %d\n", file, line);
+  if ( retval == PAPI_ESYS ) {
+    char buf[128];
+    memset( buf, '\0', sizeof(buf) );
+    sprintf(buf, "System error in %s:", call );
+    perror(buf);
+  }
+  else if ( retval > 0 ) {
+    printf("Error calculating: %s\n", call );
+  }
+  else {
+    printf("Error in %s: %s\n", call, PAPI_strerror(retval) );
+  }
+  printf("\n");
+  exit(1);
 }

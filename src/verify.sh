@@ -7,13 +7,13 @@ CSR_OMP=csr_omp
 CSC_OMP=csc_omp
 
 build() {
-    make csr VER=TRUE
+    make csr #VER=TRUE
     make clean
-    make csr-omp VER=TRUE
+    make csr-omp #VER=TRUE
     make clean
-    make csc VER=TRUE
+    make csc #VER=TRUE
     make clean
-    make csc-omp VER=TRUE
+    make csc-omp #VER=TRUE
     make clean
 }
 verify() {

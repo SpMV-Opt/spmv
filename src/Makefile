@@ -25,6 +25,7 @@ ifeq ($(VER), TRUE)
 else
 	DBG_FLAGS :=
 endif
+PAPI_LIB := -lpapi
 
 # Targets
 NAIVE := naive
@@ -42,23 +43,23 @@ INC := .
 # Rules
 naive: CXX_FLAGS += $(DBG_FLAGS) $(NAIVE_IMPL)
 naive: naive.o main.o
-	$(CXX) -o $(NAIVE) $+
+	$(CXX) $(PAPI_LIB) -o $(NAIVE) $+
 
 csr: CXX_FLAGS += $(DBG_FLAGS) $(CSR_IMPL)
 csr: csr.o main.o naive.o
-	$(CXX) -o $(CSR) $+
+	$(CXX) $(PAPI_LIB) -o $(CSR) $+
 
 csr-omp: CXX_FLAGS += $(DBG_FLAGS) $(CSR_OMP_IMPL)
 csr-omp: csr_omp.o main.o naive.o
-	$(OMP_CXX) $(OMP_FLAGS) -o $(CSR_OMP) $+
+	$(OMP_CXX) $(PAPI_LIB) $(OMP_FLAGS) -o $(CSR_OMP) $+
 
 csc: CXX_FLAGS += $(DBG_FLAGS) $(CSC_IMPL)
 csc: csc.o main.o naive.o
-	$(CXX) -o $(CSC) $+
+	$(CXX) $(PAPI_LIB) -o $(CSC) $+
 
 csc-omp: CXX_FLAGS += $(DBG_FLAGS) $(CSC_OMP_IMPL)
 csc-omp: csc_omp.o main.o naive.o
-	$(OMP_CXX) $(OMP_FLAGS) -o $(CSC_OMP) $+
+	$(OMP_CXX) $(PAPI_LIB) $(OMP_FLAGS) -o $(CSC_OMP) $+
 
 naive.o: naive.cpp
 	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<
