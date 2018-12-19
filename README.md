@@ -2,11 +2,14 @@
 
 ### Naive
 
-### Naive open-mp
+### Naive OpenMP
+
+### Register Blocking
+
+### Cache Blocking
 
 ### NUMA/Affinity
 
 ### SW Prefetching
 
-### Cache Blocking
 

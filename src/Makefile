@@ -11,7 +11,6 @@ endif
 # Compiler flags
 CXX_FLAGS := -std=c++11
 OMP_FLAGS := -fopenmp
-DBG_FLAGS := -DDEBUG
 NAIVE_IMPL := -DNAIVE
 CSR_IMPL := -DCSR
 CSC_IMPL := -DCSC
@@ -20,6 +19,12 @@ CSC_OMP_IMPL := -DCSC_OMP
 COLUMN_BLOCK_CSR_IMPL := -DCOLUMN_BLOCK_CSR
 ROW_BLOCK_CSR_IMPL := -DROW_BLOCK_CSR
 CACHE_BLOCK_IMPL := -DCACHE_BLOCK
+
+ifeq ($(VER), TRUE)
+	DBG_FLAGS := -DDEBUG -DRESULT_VERIFY
+else
+	DBG_FLAGS :=
+endif
 
 # Targets
 NAIVE := naive
@@ -78,6 +83,5 @@ main.o: main.cpp utils.h
 	#$(CXX) -fverbose-asm -O3 -g -S main.cpp
 
 clean:
-	@rm -f $(NAIVE) $(CSR) $(CSC) *.o *.s
-	@rm -f $(CSR_OMP) $(CSC_OMP)
+	@rm -f *.o *.s
 

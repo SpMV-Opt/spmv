@@ -53,7 +53,9 @@ int main(int argc, char *argv[]) {
     exit(-1);
   }
   std::fill(y, y + rows, 0.0);
-#if 1
+
+  /// =============== Naive impl for result verify ===================
+#ifdef RESULT_VERIFY
   // I: x-axis row index, J: y-axis column index, val: non-zero value
   int *I, *J;
   double *val;
@@ -95,7 +97,8 @@ int main(int argc, char *argv[]) {
   std::fill(result, result + rows, 0.0);
   // 1. naive implement
   naive(rows, columns, A, x, result);
-#endif
+#endif // RESULT_VERIFY
+  /// ==========================================================
 
   record_t *records = (record_t *)malloc(nz * sizeof(record_t));
   if (!records) {
@@ -105,14 +108,17 @@ int main(int argc, char *argv[]) {
   // parse matrix non-zero values from input matrix market file
   get_records(argv[1], records);
 
+  /// ================ CSR / CSR OMP impl ======================
   std::fill(y, y + rows, 0.0);
 #if (defined CSR) || (defined CSR_OMP)
   // reorder the records with increase order by the row
   records_reorder_by_rows(nz, records);
+#ifdef DEBUG
   fprintf(stdout, "After sort:\n");
   for (int i = 0; i < nz; ++i) {
     fprintf(stdout, "%d %d %f\n", records[i].r, records[i].c, records[i].val);
   }
+#endif // DEBUG
   // transform sparse matrix into csr format
   double *nz_vals = (double *)malloc(nz * sizeof(double));
   if (!nz_vals) {
@@ -152,7 +158,7 @@ int main(int argc, char *argv[]) {
 #endif // DEBUG
   // 2. CSR implement
   csr(rows, nz_vals, column_index, row_start, x, y);
-#if 1
+#ifdef RESULT_VERIFY
   // check CSR correctness
   if (check(rows, y, result)) {
     fprintf(stdout, "PASS\n");
@@ -161,20 +167,24 @@ int main(int argc, char *argv[]) {
       fprintf(stdout, "y: %lf result: %lf\n", y[i], result[i]);
     fprintf(stdout, "FAILED\n");
   }
-#endif
+#endif // RESULT_VERIFY
   free(nz_vals);
   free(column_index);
   free(row_start);
-#endif // CSR
+#endif // CSR || CSR OMP
+  /// ===========================================================
 
+  /// ================ CSC / CSC OMP impl =======================
   std::fill(y, y + rows, 0.0);
 #if (defined CSC) || (defined CSC_OMP)
   // reorder the records with increase order by the row
   records_reorder_by_columns(nz, records);
+#ifdef DEBUG
   fprintf(stdout, "After sort:\n");
   for (int i = 0; i < nz; ++i) {
     fprintf(stdout, "%d %d %f\n", records[i].r, records[i].c, records[i].val);
   }
+#endif // DEBUG
   // transform sparse matrix into csc format
   double *nz_vals = (double *)malloc(nz * sizeof(double));
   if (!nz_vals) {
@@ -215,7 +225,7 @@ int main(int argc, char *argv[]) {
 
   // 3. CSC implement
   csc(columns, nz_vals, row_index, column_start, x, y);
-#if 1
+#ifdef RESULT_VERIFY
   // check CSC correctness
   if (check(rows, y, result)) {
     fprintf(stdout, "PASS\n");
@@ -224,21 +234,21 @@ int main(int argc, char *argv[]) {
       fprintf(stdout, "y: %lf result: %lf\n", y[i], result[i]);
     fprintf(stdout, "FAILED\n");
   }
-#endif
+#endif // RESULT_VERIFY
   free(nz_vals);
   free(row_index);
   free(column_start);
-
-#endif // CSC
+#endif // CSC || CSC OMP
+  /// ===========================================================
 
   // memory release
-#if 1
+#ifdef RESULT_VERIFY
   free(I);
   free(J);
   free(val);
   free(A);
   free(result);
-#endif
+#endif // RESULT_VERIFY
   free(records);
   free(x);
   free(y);
