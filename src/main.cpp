@@ -31,19 +31,32 @@ int main(int argc, char *argv[]) {
 
   // rows, columns, nz: number of non-zero elems
   int rows, columns, nz;
-#if 1
-  // I: x-axis row index, J: y-axis column index, val: non-zero value
-  int *I, *J;
-#endif
-  double *val;
 
   // parse matrix size from input matrix market file
   get_matrix_size(argv[1], rows, columns, nz);
+
 #ifdef DEBUG
   fprintf(stdout, "%d %d %d\n", rows, columns, nz);
 #endif // DEBUG
 
+  // source vector x random generation
+  double *x = (double *)malloc(columns * sizeof(double));
+  if (!x) {
+    fprintf(stdout, "%s:%d, fail to malloc x!\n", __FILE__, __LINE__);
+    exit(-1);
+  }
+  rand_gen(columns, x);
+  // destination vector y for output
+  double *y = (double *)malloc(rows * sizeof(double));
+  if (!y) {
+    fprintf(stdout, "%s:%d, fail to malloc y!\n", __FILE__, __LINE__);
+    exit(-1);
+  }
+  std::fill(y, y + rows, 0.0);
 #if 1
+  // I: x-axis row index, J: y-axis column index, val: non-zero value
+  int *I, *J;
+  double *val;
   I = (int *)malloc(nz * sizeof(int));
   if(!I) {
     fprintf(stdout, "%s:%d, fail to malloc I!\n", __FILE__, __LINE__);
@@ -62,32 +75,6 @@ int main(int argc, char *argv[]) {
 
   // parse matrix non-zero values from input matrix market file
   get_matrix(argv[1], I, J, val);
-#endif
-
-  record_t *records = (record_t *)malloc(nz * sizeof(record_t));
-  if (!records) {
-    fprintf(stdout, "%s:%d, fail to malloc records!\n", __FILE__, __LINE__);
-    exit(-1);
-  }
-  // parse matrix non-zero values from input matrix market file
-  get_records(argv[1], records);
-
-  // source vector x random generation
-  double *x = (double *)malloc(columns * sizeof(double));
-  if (!x) {
-    fprintf(stdout, "%s:%d, fail to malloc x!\n", __FILE__, __LINE__);
-    exit(-1);
-  }
-  rand_gen(columns, x);
-  // destination vector y for output
-  double *y = (double *)malloc(rows * sizeof(double));
-  if (!y) {
-    fprintf(stdout, "%s:%d, fail to malloc y!\n", __FILE__, __LINE__);
-    exit(-1);
-  }
-  std::fill(y, y + rows, 0.0);
-
-#if 1
   // input sparse matrix A
   double *A = (double *)malloc(rows * columns * sizeof(double));
   if(!A) {
@@ -106,17 +93,20 @@ int main(int argc, char *argv[]) {
     exit(-1);
   }
   std::fill(result, result + rows, 0.0);
+  // 1. naive implement
   naive(rows, columns, A, x, result);
 #endif
 
-#ifdef NAIVE
-#if 1
-  // 1. naive implement
-  naive(rows, columns, A, x, y);
-#endif
-#endif // NAIVE
+  record_t *records = (record_t *)malloc(nz * sizeof(record_t));
+  if (!records) {
+    fprintf(stdout, "%s:%d, fail to malloc records!\n", __FILE__, __LINE__);
+    exit(-1);
+  }
+  // parse matrix non-zero values from input matrix market file
+  get_records(argv[1], records);
 
-#ifdef CSR
+  std::fill(y, y + rows, 0.0);
+#if (defined CSR) || (defined CSR_OMP)
   // reorder the records with increase order by the row
   records_reorder_by_rows(nz, records);
   fprintf(stdout, "After sort:\n");
@@ -177,7 +167,8 @@ int main(int argc, char *argv[]) {
   free(row_start);
 #endif // CSR
 
-#ifdef CSC
+  std::fill(y, y + rows, 0.0);
+#if (defined CSC) || (defined CSC_OMP)
   // reorder the records with increase order by the row
   records_reorder_by_columns(nz, records);
   fprintf(stdout, "After sort:\n");

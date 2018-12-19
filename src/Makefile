@@ -55,10 +55,6 @@ csc-omp: CXX_FLAGS += $(DBG_FLAGS) $(CSC_OMP_IMPL)
 csc-omp: csc_omp.o main.o naive.o
 	$(OMP_CXX) $(OMP_FLAGS) -o $(CSC_OMP) $+
 
-column-csr: CXX_FLAGS += $(DBG_FLAGS) $(COLUMN_BLOCK_CSR_IMPL)
-column-csr: csr_column_block.o main.o naive.o
-	$(CXX) -o $(COL_BLK_CSR) $+
-
 naive.o: naive.cpp
 	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<
 
@@ -69,10 +65,10 @@ csc.o: csc.cpp
 	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<
 
 csr_omp.o: csr_omp.cpp
-	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<
+	$(CXX) -I $(INC) $(OMP_FLAGS) $(CXX_FLAGS) -o $@ -c $<
 
 csc_omp.o: csc_omp.cpp
-	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<
+	$(CXX) -I $(INC) $(OMP_FLAGS) $(CXX_FLAGS) -o $@ -c $<
 
 csr_column_block.o: csr_column_block.cpp
 	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<

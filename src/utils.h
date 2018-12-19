@@ -14,7 +14,7 @@
 #include <tuple>
 #include <vector>
 
-#define RANDOM_MAX 49
+#define RANDOM_MAX 5
 #define ESP 1e-6
 
 typedef struct {
@@ -124,7 +124,8 @@ bool check(const size_t &len, double *output, double *result) {
   for (std::size_t i = 0; i < len; ++i) {
     if ((output[i] - result[i]) > ESP) {
       pass = false;
-      break;
+      printf("fail at index %d, out: %lf real: %lf \n", i, output[i], result[i]);
+      //break;
     }
   }
   return pass;
