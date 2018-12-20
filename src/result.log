@@ -1,0 +1,324 @@
+thread num: 1, test data set: af_shell2.mtx
+CSR / CSR OMP impl wall time: 0.078 ms 
+CSR / CSR OMP impl perf: L2 cache miss 42819, L2 cache misses ratio: 2.226 %, in 186332257 cycles
+thread num: 1, test data set: cage14.mtx
+CSR / CSR OMP impl wall time: 0.208 ms 
+CSR / CSR OMP impl perf: L2 cache miss 439569, L2 cache misses ratio: 5.547 %, in 496303549 cycles
+thread num: 1, test data set: darcy003.mtx
+CSR / CSR OMP impl wall time: 0.014 ms 
+CSR / CSR OMP impl perf: L2 cache miss 203756, L2 cache misses ratio: 37.382 %, in 33247680 cycles
+thread num: 1, test data set: GL7d19.mtx
+CSR / CSR OMP impl wall time: 0.595 ms 
+CSR / CSR OMP impl perf: L2 cache miss 39453040, L2 cache misses ratio: 88.568 %, in 1419253266 cycles
+thread num: 1, test data set: kim2.mtx
+CSR / CSR OMP impl wall time: 0.080 ms 
+CSR / CSR OMP impl perf: L2 cache miss 78676, L2 cache misses ratio: 3.145 %, in 190118935 cycles
+thread num: 1, test data set: lp_osa_60_linear.mtx
+CSR / CSR OMP impl wall time: 0.012 ms 
+CSR / CSR OMP impl perf: L2 cache miss 69552, L2 cache misses ratio: 11.130 %, in 27661876 cycles
+thread num: 1, test data set: sls.mtx
+CSR / CSR OMP impl wall time: 0.076 ms 
+CSR / CSR OMP impl perf: L2 cache miss 1444866, L2 cache misses ratio: 45.873 %, in 181895560 cycles
+thread num: 1, test data set: stormG2_1000.mtx
+CSR / CSR OMP impl wall time: 0.036 ms 
+CSR / CSR OMP impl perf: L2 cache miss 39593, L2 cache misses ratio: 4.029 %, in 86015625 cycles
+thread num: 1, test data set: wikipedia-20051105.mtx
+CSR / CSR OMP impl wall time: 1.771 ms 
+CSR / CSR OMP impl perf: L2 cache miss 13825965, L2 cache misses ratio: 71.073 %, in 4241575203 cycles
+thread num: 2, test data set: af_shell2.mtx
+CSR / CSR OMP impl wall time: 0.078 ms 
+CSR / CSR OMP impl perf: L2 cache miss 42253, L2 cache misses ratio: 2.198 %, in 186367407 cycles
+thread num: 2, test data set: cage14.mtx
+CSR / CSR OMP impl wall time: 0.208 ms 
+CSR / CSR OMP impl perf: L2 cache miss 455304, L2 cache misses ratio: 5.749 %, in 496809981 cycles
+thread num: 2, test data set: darcy003.mtx
+CSR / CSR OMP impl wall time: 0.014 ms 
+CSR / CSR OMP impl perf: L2 cache miss 202791, L2 cache misses ratio: 37.275 %, in 33004477 cycles
+thread num: 2, test data set: GL7d19.mtx
+CSR / CSR OMP impl wall time: 0.599 ms 
+CSR / CSR OMP impl perf: L2 cache miss 39453851, L2 cache misses ratio: 88.569 %, in 1429228975 cycles
+thread num: 2, test data set: kim2.mtx
+CSR / CSR OMP impl wall time: 0.080 ms 
+CSR / CSR OMP impl perf: L2 cache miss 67624, L2 cache misses ratio: 2.706 %, in 189741525 cycles
+thread num: 2, test data set: lp_osa_60_linear.mtx
+CSR / CSR OMP impl wall time: 0.012 ms 
+CSR / CSR OMP impl perf: L2 cache miss 69792, L2 cache misses ratio: 11.168 %, in 27640441 cycles
+thread num: 2, test data set: sls.mtx
+CSR / CSR OMP impl wall time: 0.076 ms 
+CSR / CSR OMP impl perf: L2 cache miss 1434654, L2 cache misses ratio: 45.625 %, in 181371535 cycles
+thread num: 2, test data set: stormG2_1000.mtx
+CSR / CSR OMP impl wall time: 0.037 ms 
+CSR / CSR OMP impl perf: L2 cache miss 54170, L2 cache misses ratio: 5.512 %, in 86667697 cycles
+thread num: 2, test data set: wikipedia-20051105.mtx
+CSR / CSR OMP impl wall time: 1.757 ms 
+CSR / CSR OMP impl perf: L2 cache miss 13822239, L2 cache misses ratio: 71.376 %, in 4209044650 cycles
+thread num: 3, test data set: af_shell2.mtx
+CSR / CSR OMP impl wall time: 0.078 ms 
+CSR / CSR OMP impl perf: L2 cache miss 42892, L2 cache misses ratio: 2.231 %, in 186372720 cycles
+thread num: 3, test data set: cage14.mtx
+CSR / CSR OMP impl wall time: 0.209 ms 
+CSR / CSR OMP impl perf: L2 cache miss 466770, L2 cache misses ratio: 5.896 %, in 497647107 cycles
+thread num: 3, test data set: darcy003.mtx
+CSR / CSR OMP impl wall time: 0.014 ms 
+CSR / CSR OMP impl perf: L2 cache miss 204379, L2 cache misses ratio: 37.508 %, in 33256908 cycles
+thread num: 3, test data set: GL7d19.mtx
+CSR / CSR OMP impl wall time: 0.598 ms 
+CSR / CSR OMP impl perf: L2 cache miss 39462208, L2 cache misses ratio: 88.589 %, in 1428580142 cycles
+thread num: 3, test data set: kim2.mtx
+CSR / CSR OMP impl wall time: 0.080 ms 
+CSR / CSR OMP impl perf: L2 cache miss 76903, L2 cache misses ratio: 3.075 %, in 189846326 cycles
+thread num: 3, test data set: lp_osa_60_linear.mtx
+CSR / CSR OMP impl wall time: 0.012 ms 
+CSR / CSR OMP impl perf: L2 cache miss 69673, L2 cache misses ratio: 11.145 %, in 27648404 cycles
+thread num: 3, test data set: sls.mtx
+CSR / CSR OMP impl wall time: 0.076 ms 
+CSR / CSR OMP impl perf: L2 cache miss 1443043, L2 cache misses ratio: 45.881 %, in 181801487 cycles
+thread num: 3, test data set: stormG2_1000.mtx
+CSR / CSR OMP impl wall time: 0.037 ms 
+CSR / CSR OMP impl perf: L2 cache miss 57207, L2 cache misses ratio: 5.820 %, in 86816610 cycles
+thread num: 3, test data set: wikipedia-20051105.mtx
+CSR / CSR OMP impl wall time: 1.760 ms 
+CSR / CSR OMP impl perf: L2 cache miss 13798498, L2 cache misses ratio: 71.270 %, in 4214740352 cycles
+thread num: 4, test data set: af_shell2.mtx
+CSR / CSR OMP impl wall time: 0.079 ms 
+CSR / CSR OMP impl perf: L2 cache miss 59022, L2 cache misses ratio: 3.069 %, in 186892967 cycles
+thread num: 4, test data set: cage14.mtx
+CSR / CSR OMP impl wall time: 0.208 ms 
+CSR / CSR OMP impl perf: L2 cache miss 464069, L2 cache misses ratio: 5.858 %, in 496971924 cycles
+thread num: 4, test data set: darcy003.mtx
+CSR / CSR OMP impl wall time: 0.015 ms 
+CSR / CSR OMP impl perf: L2 cache miss 202889, L2 cache misses ratio: 37.233 %, in 34969680 cycles
+thread num: 4, test data set: GL7d19.mtx
+CSR / CSR OMP impl wall time: 0.597 ms 
+CSR / CSR OMP impl perf: L2 cache miss 39483605, L2 cache misses ratio: 88.603 %, in 1409514160 cycles
+thread num: 4, test data set: kim2.mtx
+CSR / CSR OMP impl wall time: 0.079 ms 
+CSR / CSR OMP impl perf: L2 cache miss 65317, L2 cache misses ratio: 2.614 %, in 189457995 cycles
+thread num: 4, test data set: lp_osa_60_linear.mtx
+CSR / CSR OMP impl wall time: 0.012 ms 
+CSR / CSR OMP impl perf: L2 cache miss 69764, L2 cache misses ratio: 11.163 %, in 27647781 cycles
+thread num: 4, test data set: sls.mtx
+CSR / CSR OMP impl wall time: 0.076 ms 
+CSR / CSR OMP impl perf: L2 cache miss 1441041, L2 cache misses ratio: 45.757 %, in 181838831 cycles
+thread num: 4, test data set: stormG2_1000.mtx
+CSR / CSR OMP impl wall time: 0.037 ms 
+CSR / CSR OMP impl perf: L2 cache miss 59415, L2 cache misses ratio: 6.030 %, in 86892162 cycles
+thread num: 4, test data set: wikipedia-20051105.mtx
+CSR / CSR OMP impl wall time: 1.766 ms 
+CSR / CSR OMP impl perf: L2 cache miss 13813817, L2 cache misses ratio: 71.273 %, in 4231232882 cycles
+thread num: 5, test data set: af_shell2.mtx
+CSR / CSR OMP impl wall time: 0.078 ms 
+CSR / CSR OMP impl perf: L2 cache miss 42359, L2 cache misses ratio: 2.204 %, in 186383276 cycles
+thread num: 5, test data set: cage14.mtx
+CSR / CSR OMP impl wall time: 0.208 ms 
+CSR / CSR OMP impl perf: L2 cache miss 443410, L2 cache misses ratio: 5.598 %, in 496107548 cycles
+thread num: 5, test data set: darcy003.mtx
+CSR / CSR OMP impl wall time: 0.014 ms 
+CSR / CSR OMP impl perf: L2 cache miss 202813, L2 cache misses ratio: 37.243 %, in 33313899 cycles
+thread num: 5, test data set: GL7d19.mtx
+CSR / CSR OMP impl wall time: 0.593 ms 
+CSR / CSR OMP impl perf: L2 cache miss 39442683, L2 cache misses ratio: 88.557 %, in 1416511004 cycles
+thread num: 5, test data set: kim2.mtx
+CSR / CSR OMP impl wall time: 0.080 ms 
+CSR / CSR OMP impl perf: L2 cache miss 69258, L2 cache misses ratio: 2.770 %, in 189753202 cycles
+thread num: 5, test data set: lp_osa_60_linear.mtx
+CSR / CSR OMP impl wall time: 0.012 ms 
+CSR / CSR OMP impl perf: L2 cache miss 69813, L2 cache misses ratio: 11.169 %, in 27638940 cycles
+thread num: 5, test data set: sls.mtx
+CSR / CSR OMP impl wall time: 0.076 ms 
+CSR / CSR OMP impl perf: L2 cache miss 1433165, L2 cache misses ratio: 45.515 %, in 181606074 cycles
+thread num: 5, test data set: stormG2_1000.mtx
+CSR / CSR OMP impl wall time: 0.037 ms 
+CSR / CSR OMP impl perf: L2 cache miss 54130, L2 cache misses ratio: 5.493 %, in 86763184 cycles
+thread num: 5, test data set: wikipedia-20051105.mtx
+CSR / CSR OMP impl wall time: 1.762 ms 
+CSR / CSR OMP impl perf: L2 cache miss 13811464, L2 cache misses ratio: 71.314 %, in 4220042090 cycles
+thread num: 6, test data set: af_shell2.mtx
+CSR / CSR OMP impl wall time: 0.078 ms 
+CSR / CSR OMP impl perf: L2 cache miss 66393, L2 cache misses ratio: 3.454 %, in 186383369 cycles
+thread num: 6, test data set: cage14.mtx
+CSR / CSR OMP impl wall time: 0.208 ms 
+CSR / CSR OMP impl perf: L2 cache miss 447549, L2 cache misses ratio: 5.649 %, in 496402589 cycles
+thread num: 6, test data set: darcy003.mtx
+CSR / CSR OMP impl wall time: 0.014 ms 
+CSR / CSR OMP impl perf: L2 cache miss 203310, L2 cache misses ratio: 37.315 %, in 33283904 cycles
+thread num: 6, test data set: GL7d19.mtx
+CSR / CSR OMP impl wall time: 0.589 ms 
+CSR / CSR OMP impl perf: L2 cache miss 39430329, L2 cache misses ratio: 88.593 %, in 1408042198 cycles
+thread num: 6, test data set: kim2.mtx
+CSR / CSR OMP impl wall time: 0.080 ms 
+CSR / CSR OMP impl perf: L2 cache miss 66151, L2 cache misses ratio: 2.646 %, in 189749242 cycles
+thread num: 6, test data set: lp_osa_60_linear.mtx
+CSR / CSR OMP impl wall time: 0.012 ms 
+CSR / CSR OMP impl perf: L2 cache miss 69645, L2 cache misses ratio: 11.143 %, in 27613219 cycles
+thread num: 6, test data set: sls.mtx
+CSR / CSR OMP impl wall time: 0.076 ms 
+CSR / CSR OMP impl perf: L2 cache miss 1436362, L2 cache misses ratio: 45.612 %, in 181648405 cycles
+thread num: 6, test data set: stormG2_1000.mtx
+CSR / CSR OMP impl wall time: 0.037 ms 
+CSR / CSR OMP impl perf: L2 cache miss 57631, L2 cache misses ratio: 5.853 %, in 86857246 cycles
+thread num: 6, test data set: wikipedia-20051105.mtx
+CSR / CSR OMP impl wall time: 1.769 ms 
+CSR / CSR OMP impl perf: L2 cache miss 13838177, L2 cache misses ratio: 71.226 %, in 4236803041 cycles
+thread num: 7, test data set: af_shell2.mtx
+CSR / CSR OMP impl wall time: 0.078 ms 
+CSR / CSR OMP impl perf: L2 cache miss 41207, L2 cache misses ratio: 2.144 %, in 186363505 cycles
+thread num: 7, test data set: cage14.mtx
+CSR / CSR OMP impl wall time: 0.208 ms 
+CSR / CSR OMP impl perf: L2 cache miss 445256, L2 cache misses ratio: 5.621 %, in 496420059 cycles
+thread num: 7, test data set: darcy003.mtx
+CSR / CSR OMP impl wall time: 0.014 ms 
+CSR / CSR OMP impl perf: L2 cache miss 203804, L2 cache misses ratio: 37.382 %, in 33293511 cycles
+thread num: 7, test data set: GL7d19.mtx
+CSR / CSR OMP impl wall time: 0.594 ms 
+CSR / CSR OMP impl perf: L2 cache miss 39456060, L2 cache misses ratio: 88.578 %, in 1417685320 cycles
+thread num: 7, test data set: kim2.mtx
+CSR / CSR OMP impl wall time: 0.080 ms 
+CSR / CSR OMP impl perf: L2 cache miss 65585, L2 cache misses ratio: 2.624 %, in 189678118 cycles
+thread num: 7, test data set: lp_osa_60_linear.mtx
+CSR / CSR OMP impl wall time: 0.012 ms 
+CSR / CSR OMP impl perf: L2 cache miss 69241, L2 cache misses ratio: 11.077 %, in 27594033 cycles
+thread num: 7, test data set: sls.mtx
+CSR / CSR OMP impl wall time: 0.076 ms 
+CSR / CSR OMP impl perf: L2 cache miss 1435621, L2 cache misses ratio: 45.579 %, in 181693836 cycles
+thread num: 7, test data set: stormG2_1000.mtx
+CSR / CSR OMP impl wall time: 0.036 ms 
+CSR / CSR OMP impl perf: L2 cache miss 40949, L2 cache misses ratio: 4.173 %, in 86028131 cycles
+thread num: 7, test data set: wikipedia-20051105.mtx
+CSR / CSR OMP impl wall time: 1.731 ms 
+CSR / CSR OMP impl perf: L2 cache miss 13688737, L2 cache misses ratio: 71.289 %, in 4147889180 cycles
+thread num: 8, test data set: af_shell2.mtx
+CSR / CSR OMP impl wall time: 0.078 ms 
+CSR / CSR OMP impl perf: L2 cache miss 42304, L2 cache misses ratio: 2.201 %, in 186381390 cycles
+thread num: 8, test data set: cage14.mtx
+CSR / CSR OMP impl wall time: 0.208 ms 
+CSR / CSR OMP impl perf: L2 cache miss 462412, L2 cache misses ratio: 5.826 %, in 497263030 cycles
+thread num: 8, test data set: darcy003.mtx
+CSR / CSR OMP impl wall time: 0.014 ms 
+CSR / CSR OMP impl perf: L2 cache miss 203249, L2 cache misses ratio: 37.330 %, in 33241564 cycles
+thread num: 8, test data set: GL7d19.mtx
+CSR / CSR OMP impl wall time: 0.598 ms 
+CSR / CSR OMP impl perf: L2 cache miss 39453474, L2 cache misses ratio: 88.560 %, in 1428281346 cycles
+thread num: 8, test data set: kim2.mtx
+CSR / CSR OMP impl wall time: 0.080 ms 
+CSR / CSR OMP impl perf: L2 cache miss 65702, L2 cache misses ratio: 2.628 %, in 189745295 cycles
+thread num: 8, test data set: lp_osa_60_linear.mtx
+CSR / CSR OMP impl wall time: 0.012 ms 
+CSR / CSR OMP impl perf: L2 cache miss 69754, L2 cache misses ratio: 11.161 %, in 27614972 cycles
+thread num: 8, test data set: sls.mtx
+CSR / CSR OMP impl wall time: 0.076 ms 
+CSR / CSR OMP impl perf: L2 cache miss 1449253, L2 cache misses ratio: 46.073 %, in 181776152 cycles
+thread num: 8, test data set: stormG2_1000.mtx
+CSR / CSR OMP impl wall time: 0.036 ms 
+CSR / CSR OMP impl perf: L2 cache miss 45147, L2 cache misses ratio: 4.590 %, in 86225072 cycles
+thread num: 8, test data set: wikipedia-20051105.mtx
+CSR / CSR OMP impl wall time: 1.743 ms 
+CSR / CSR OMP impl perf: L2 cache miss 13700364, L2 cache misses ratio: 71.313 %, in 4174939391 cycles
+thread num: 9, test data set: af_shell2.mtx
+CSR / CSR OMP impl wall time: 0.078 ms 
+CSR / CSR OMP impl perf: L2 cache miss 41389, L2 cache misses ratio: 2.153 %, in 186398144 cycles
+thread num: 9, test data set: cage14.mtx
+CSR / CSR OMP impl wall time: 0.208 ms 
+CSR / CSR OMP impl perf: L2 cache miss 459992, L2 cache misses ratio: 5.807 %, in 496723601 cycles
+thread num: 9, test data set: darcy003.mtx
+CSR / CSR OMP impl wall time: 0.014 ms 
+CSR / CSR OMP impl perf: L2 cache miss 204256, L2 cache misses ratio: 37.541 %, in 33146777 cycles
+thread num: 9, test data set: GL7d19.mtx
+CSR / CSR OMP impl wall time: 0.590 ms 
+CSR / CSR OMP impl perf: L2 cache miss 39425851, L2 cache misses ratio: 88.582 %, in 1408527859 cycles
+thread num: 9, test data set: kim2.mtx
+CSR / CSR OMP impl wall time: 0.080 ms 
+CSR / CSR OMP impl perf: L2 cache miss 64262, L2 cache misses ratio: 2.571 %, in 189699106 cycles
+thread num: 9, test data set: lp_osa_60_linear.mtx
+CSR / CSR OMP impl wall time: 0.012 ms 
+CSR / CSR OMP impl perf: L2 cache miss 69446, L2 cache misses ratio: 11.113 %, in 27607483 cycles
+thread num: 9, test data set: sls.mtx
+CSR / CSR OMP impl wall time: 0.076 ms 
+CSR / CSR OMP impl perf: L2 cache miss 1446930, L2 cache misses ratio: 45.953 %, in 182015635 cycles
+thread num: 9, test data set: stormG2_1000.mtx
+CSR / CSR OMP impl wall time: 0.037 ms 
+CSR / CSR OMP impl perf: L2 cache miss 56529, L2 cache misses ratio: 5.744 %, in 86784565 cycles
+thread num: 9, test data set: wikipedia-20051105.mtx
+CSR / CSR OMP impl wall time: 1.760 ms 
+CSR / CSR OMP impl perf: L2 cache miss 13805842, L2 cache misses ratio: 71.339 %, in 4215028950 cycles
+thread num: 10, test data set: af_shell2.mtx
+CSR / CSR OMP impl wall time: 0.078 ms 
+CSR / CSR OMP impl perf: L2 cache miss 41700, L2 cache misses ratio: 2.169 %, in 186360281 cycles
+thread num: 10, test data set: cage14.mtx
+CSR / CSR OMP impl wall time: 0.208 ms 
+CSR / CSR OMP impl perf: L2 cache miss 467523, L2 cache misses ratio: 5.901 %, in 497263486 cycles
+thread num: 10, test data set: darcy003.mtx
+CSR / CSR OMP impl wall time: 0.014 ms 
+CSR / CSR OMP impl perf: L2 cache miss 202080, L2 cache misses ratio: 37.123 %, in 33067136 cycles
+thread num: 10, test data set: GL7d19.mtx
+CSR / CSR OMP impl wall time: 0.600 ms 
+CSR / CSR OMP impl perf: L2 cache miss 39445689, L2 cache misses ratio: 88.566 %, in 1432265250 cycles
+thread num: 10, test data set: kim2.mtx
+CSR / CSR OMP impl wall time: 0.080 ms 
+CSR / CSR OMP impl perf: L2 cache miss 72331, L2 cache misses ratio: 2.891 %, in 190076506 cycles
+thread num: 10, test data set: lp_osa_60_linear.mtx
+CSR / CSR OMP impl wall time: 0.012 ms 
+CSR / CSR OMP impl perf: L2 cache miss 69399, L2 cache misses ratio: 11.103 %, in 27802523 cycles
+thread num: 10, test data set: sls.mtx
+CSR / CSR OMP impl wall time: 0.076 ms 
+CSR / CSR OMP impl perf: L2 cache miss 1431786, L2 cache misses ratio: 45.509 %, in 180352606 cycles
+thread num: 10, test data set: stormG2_1000.mtx
+CSR / CSR OMP impl wall time: 0.037 ms 
+CSR / CSR OMP impl perf: L2 cache miss 57594, L2 cache misses ratio: 5.845 %, in 86850982 cycles
+thread num: 10, test data set: wikipedia-20051105.mtx
+CSR / CSR OMP impl wall time: 1.769 ms 
+CSR / CSR OMP impl perf: L2 cache miss 13861937, L2 cache misses ratio: 71.429 %, in 4237418772 cycles
+thread num: 11, test data set: af_shell2.mtx
+CSR / CSR OMP impl wall time: 0.078 ms 
+CSR / CSR OMP impl perf: L2 cache miss 44065, L2 cache misses ratio: 2.292 %, in 186384903 cycles
+thread num: 11, test data set: cage14.mtx
+CSR / CSR OMP impl wall time: 0.209 ms 
+CSR / CSR OMP impl perf: L2 cache miss 485040, L2 cache misses ratio: 6.120 %, in 498115131 cycles
+thread num: 11, test data set: darcy003.mtx
+CSR / CSR OMP impl wall time: 0.014 ms 
+CSR / CSR OMP impl perf: L2 cache miss 202894, L2 cache misses ratio: 37.268 %, in 33138420 cycles
+thread num: 11, test data set: GL7d19.mtx
+CSR / CSR OMP impl wall time: 0.594 ms 
+CSR / CSR OMP impl perf: L2 cache miss 39421477, L2 cache misses ratio: 88.571 %, in 1419114931 cycles
+thread num: 11, test data set: kim2.mtx
+CSR / CSR OMP impl wall time: 0.080 ms 
+CSR / CSR OMP impl perf: L2 cache miss 65873, L2 cache misses ratio: 2.635 %, in 189739548 cycles
+thread num: 11, test data set: lp_osa_60_linear.mtx
+CSR / CSR OMP impl wall time: 0.012 ms 
+CSR / CSR OMP impl perf: L2 cache miss 69060, L2 cache misses ratio: 11.050 %, in 27590551 cycles
+thread num: 11, test data set: sls.mtx
+CSR / CSR OMP impl wall time: 0.076 ms 
+CSR / CSR OMP impl perf: L2 cache miss 1448277, L2 cache misses ratio: 46.002 %, in 181934981 cycles
+thread num: 11, test data set: stormG2_1000.mtx
+CSR / CSR OMP impl wall time: 0.036 ms 
+CSR / CSR OMP impl perf: L2 cache miss 51981, L2 cache misses ratio: 5.293 %, in 86345827 cycles
+thread num: 11, test data set: wikipedia-20051105.mtx
+CSR / CSR OMP impl wall time: 1.760 ms 
+CSR / CSR OMP impl perf: L2 cache miss 13830634, L2 cache misses ratio: 71.408 %, in 4217206872 cycles
+thread num: 12, test data set: af_shell2.mtx
+CSR / CSR OMP impl wall time: 0.078 ms 
+CSR / CSR OMP impl perf: L2 cache miss 42294, L2 cache misses ratio: 2.200 %, in 186391907 cycles
+thread num: 12, test data set: cage14.mtx
+CSR / CSR OMP impl wall time: 0.209 ms 
+CSR / CSR OMP impl perf: L2 cache miss 471037, L2 cache misses ratio: 5.942 %, in 497706652 cycles
+thread num: 12, test data set: darcy003.mtx
+CSR / CSR OMP impl wall time: 0.014 ms 
+CSR / CSR OMP impl perf: L2 cache miss 204525, L2 cache misses ratio: 37.546 %, in 33254533 cycles
+thread num: 12, test data set: GL7d19.mtx
+CSR / CSR OMP impl wall time: 0.593 ms 
+CSR / CSR OMP impl perf: L2 cache miss 39431381, L2 cache misses ratio: 88.594 %, in 1416236395 cycles
+thread num: 12, test data set: kim2.mtx
+CSR / CSR OMP impl wall time: 0.080 ms 
+CSR / CSR OMP impl perf: L2 cache miss 71787, L2 cache misses ratio: 2.868 %, in 190068085 cycles
+thread num: 12, test data set: lp_osa_60_linear.mtx
+CSR / CSR OMP impl wall time: 0.012 ms 
+CSR / CSR OMP impl perf: L2 cache miss 69447, L2 cache misses ratio: 11.109 %, in 27652402 cycles
+thread num: 12, test data set: sls.mtx
+CSR / CSR OMP impl wall time: 0.076 ms 
+CSR / CSR OMP impl perf: L2 cache miss 1435041, L2 cache misses ratio: 45.590 %, in 181588597 cycles
+thread num: 12, test data set: stormG2_1000.mtx
+CSR / CSR OMP impl wall time: 0.036 ms 
+CSR / CSR OMP impl perf: L2 cache miss 40659, L2 cache misses ratio: 4.146 %, in 86071148 cycles
+thread num: 12, test data set: wikipedia-20051105.mtx
+CSR / CSR OMP impl wall time: 1.761 ms 
+CSR / CSR OMP impl perf: L2 cache miss 13805512, L2 cache misses ratio: 71.280 %, in 4217467965 cycles

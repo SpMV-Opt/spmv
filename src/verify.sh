@@ -5,15 +5,18 @@ CSR=csr
 CSC=csc
 CSR_OMP=csr_omp
 CSC_OMP=csc_omp
+num_threads=12
 
 build() {
-    make csr #VER=TRUE
+    rm $CSR $CSR_OMP $CSC $CSC_OMP
     make clean
-    make csr-omp #VER=TRUE
+    make csr VER=TRUE
     make clean
-    make csc #VER=TRUE
+    make csr-omp VER=TRUE
     make clean
-    make csc-omp #VER=TRUE
+    make csc VER=TRUE
+    make clean
+    make csc-omp VER=TRUE
     make clean
 }
 verify() {
@@ -22,10 +25,10 @@ verify() {
         rm verify.log
     fi
     touch verify.log
-    ./csr ../data/494_bus.mtx >> verify.log
-    ./csr_omp ../data/494_bus.mtx >> verify.log
-    ./csc ../data/494_bus.mtx >> verify.log
-    ./csc_omp ../data/494_bus.mtx >> verify.log
+    ./csr ../data/494_bus.mtx $num_threads >> verify.log
+    ./csr_omp ../data/494_bus.mtx $num_threads >> verify.log
+    ./csc ../data/494_bus.mtx $num_threads >> verify.log
+    ./csc_omp ../data/494_bus.mtx $num_threads >> verify.log
     expect_pass=4
     pass_count=`grep -rin PASS verify.log | wc -l`
 
@@ -39,7 +42,7 @@ verify() {
     else
         echo "PASS!"
     fi
-    rm $CSC $CSR $CSR_OMP $CSC_OMP
+    #rm $CSC $CSR $CSR_OMP $CSC_OMP
 }
 build
 verify
