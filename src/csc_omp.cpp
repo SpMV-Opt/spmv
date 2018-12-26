@@ -2,7 +2,9 @@
  *   CSC(Compressed Sparse Column) format for sparse matrix.
  *
  */
+#ifdef OMP
 #include <omp.h>
+#endif
 
 // N: columns of sparse matrix
 // nz_vals: non-zero elements of sparse matrix

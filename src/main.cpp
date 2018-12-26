@@ -21,16 +21,20 @@
 #include <cstdlib>
 #include <cstring>
 #include <cassert>
-#include <papi.h>
 #include <sys/time.h>
+#ifdef PAPI
+#include <papi.h>
+#endif
 
 #include "spmv_opt.h"
 #include "utils.h"
 
 #define NUM_EVENTS 3
 
+#ifdef PAPI
 // handle papi test_fail 
 static void test_fail(const char *file, int line, const char *call, int retval);
+#endif
 
 int main(int argc, char *argv[]) {
   if (argc < 2) {
@@ -312,6 +316,7 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
+#ifdef PAPI
 static void test_fail(const char *file, int line, const char *call, int retval) {
   printf("%s\tFAILED\nLine # %d\n", file, line);
   if ( retval == PAPI_ESYS ) {
@@ -329,3 +334,4 @@ static void test_fail(const char *file, int line, const char *call, int retval) 
   printf("\n");
   exit(1);
 }
+#endif

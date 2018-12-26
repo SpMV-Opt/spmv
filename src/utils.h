@@ -124,7 +124,7 @@ bool check(const size_t &len, double *output, double *result) {
   for (std::size_t i = 0; i < len; ++i) {
     if ((output[i] - result[i]) > ESP) {
       pass = false;
-      printf("fail at index %d, out: %lf real: %lf \n", i, output[i], result[i]);
+      printf("fail at index %lu, out: %lf real: %lf \n", i, output[i], result[i]);
       //break;
     }
   }

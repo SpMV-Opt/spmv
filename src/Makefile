@@ -2,15 +2,18 @@
 CXX := g++
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
-	OMP_CXX := g++
+    OMP_FLAGS := -fopenmp -DOMP
+	PAPI_LIB := -lpapi
+PAPI_FLAG := -DPAPI
 endif
 ifeq ($(UNAME_S),Darwin)
-	OMP_CXX := g++-8
+    OMP_FLAGS :=
+	PAPI_LIB :=
+	PAPI_FLAG :=
 endif
 
 # Compiler flags
 CXX_FLAGS := -std=c++11
-OMP_FLAGS := -fopenmp
 NAIVE_IMPL := -DNAIVE
 CSR_IMPL := -DCSR
 CSC_IMPL := -DCSC
@@ -25,7 +28,6 @@ ifeq ($(VER), TRUE)
 else
 	DBG_FLAGS :=
 endif
-PAPI_LIB := -lpapi
 
 # Targets
 NAIVE := naive
@@ -41,25 +43,25 @@ CACHE_BLOCK := cache-block
 INC := .
 
 # Rules
-naive: CXX_FLAGS += $(DBG_FLAGS) $(NAIVE_IMPL)
+naive: CXX_FLAGS += $(DBG_FLAGS) $(NAIVE_IMPL) $(PAPI_FLAG)
 naive: naive.o main.o
 	$(CXX) $(PAPI_LIB) -o $(NAIVE) $+
 
-csr: CXX_FLAGS += $(DBG_FLAGS) $(CSR_IMPL)
+csr: CXX_FLAGS += $(DBG_FLAGS) $(CSR_IMPL) $(PAPI_FLAG)
 csr: csr.o main.o naive.o
 	$(CXX) $(PAPI_LIB) -o $(CSR) $+
 
-csr-omp: CXX_FLAGS += $(DBG_FLAGS) $(CSR_OMP_IMPL)
+csr-omp: CXX_FLAGS += $(DBG_FLAGS) $(CSR_OMP_IMPL) $(PAPI_FLAG)
 csr-omp: csr_omp.o main.o naive.o
-	$(OMP_CXX) $(PAPI_LIB) $(OMP_FLAGS) -o $(CSR_OMP) $+
+	$(CXX) $(PAPI_LIB) $(OMP_FLAGS) -o $(CSR_OMP) $+
 
-csc: CXX_FLAGS += $(DBG_FLAGS) $(CSC_IMPL)
+csc: CXX_FLAGS += $(DBG_FLAGS) $(CSC_IMPL) $(PAPI_FLAG)
 csc: csc.o main.o naive.o
 	$(CXX) $(PAPI_LIB) -o $(CSC) $+
 
-csc-omp: CXX_FLAGS += $(DBG_FLAGS) $(CSC_OMP_IMPL)
+csc-omp: CXX_FLAGS += $(DBG_FLAGS) $(CSC_OMP_IMPL) $(PAPI_FLAG)
 csc-omp: csc_omp.o main.o naive.o
-	$(OMP_CXX) $(PAPI_LIB) $(OMP_FLAGS) -o $(CSC_OMP) $+
+	$(CXX) $(PAPI_LIB) $(OMP_FLAGS) -o $(CSC_OMP) $+
 
 naive.o: naive.cpp
 	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<

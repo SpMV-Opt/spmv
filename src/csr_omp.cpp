@@ -2,7 +2,9 @@
  *   CSR(Compressed Sparse Row) format for sparse matrix.
  *
  */
+#ifdef OMP
 #include <omp.h>
+#endif
 
 // M: rows of sparse matrix
 // nz_vals: non-zero elements of sparse matrix
