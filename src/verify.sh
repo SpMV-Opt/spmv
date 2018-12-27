@@ -1,5 +1,7 @@
 #!/bin/bash
+#
 # Verify the correctness of basic implement
+#
 
 CSR=csr
 CSC=csc
@@ -8,7 +10,7 @@ CSC_OMP=csc_omp
 num_threads=12
 
 build() {
-    rm $CSR $CSR_OMP $CSC $CSC_OMP
+    #rm $CSR $CSR_OMP $CSC $CSC_OMP
     make clean
     make csr VER=TRUE
     make clean
@@ -42,7 +44,7 @@ verify() {
     else
         echo "PASS!"
     fi
-    rm $CSC $CSR $CSR_OMP $CSC_OMP verify.log
+    #rm $CSC $CSR $CSR_OMP $CSC_OMP verify.log
 }
 build
 verify

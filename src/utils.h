@@ -18,13 +18,26 @@
 #define ESP 1e-6
 
 typedef struct {
-  int r, c;  // rows and columns
+  int r, c;   // rows and columns
   double val; // non-zero double value
 } record_t;
 
-bool cmp_key_row(const record_t &a, const record_t &b) { return a.r < b.r; }
+typedef struct {
+  int r, c;   // rows and columns
+} block_t;
 
-bool cmp_key_column(const record_t &a, const record_t &b) { return a.c < b.c; }
+bool cmp_record_key_row(const record_t &a, const record_t &b) { return a.r < b.r; }
+
+bool cmp_record_key_column(const record_t &a, const record_t &b) { return a.c < b.c; }
+
+bool cmp_block_key_row(const block_t &a, const block_t &b) { return a.r < b.r; }
+
+bool cmp_block_key_column(const block_t &a, const block_t &b) { return a.c < b.c; }
+
+bool cmp_block_pair (const std::pair<int, int> &a, std::pair<int, int> &b) {
+  if(a.first != b.first) return a.first < b.first;
+  return a.second < b.second;
+}
 
 // M: rows, N: columns, nz: number of non-zero elems
 void get_matrix_size(const char *file_name, int &M, int &N, int &nz) {
@@ -71,6 +84,22 @@ void get_matrix(const char *file_name, int *I, int *J, double *val) {
   in.close();
 }
 
+void get_bcsr_block_idx(record_t *records, int &nz, int &_r, int &_c,
+                        std::vector<std::pair<int, int>> &block_idx) {
+  for (int i = 0; i < nz; ++i) {
+    std::pair<int, int> t =
+        std::make_pair(records[i].r / _r, records[i].c / _c);
+
+    auto it = block_idx.begin(), ie = block_idx.end();
+    bool flag = false;
+    for(; it != ie; ++it) {
+      if(t == *it) flag = true;
+    }
+    if (!flag) block_idx.push_back(t);
+  }
+  std::sort(block_idx.begin(), block_idx.end(), cmp_block_pair);
+}
+
 // nz: number of non-zero elems, I: x-axis, J: y-axis, val: value
 void get_records(const char *file_name, record_t *records) {
   std::ifstream in;
@@ -101,11 +130,11 @@ void get_records(const char *file_name, record_t *records) {
 }
 
 void records_reorder_by_rows(const int &nz, record_t *records) {
-  std::sort(records, records + nz, cmp_key_row);
+  std::sort(records, records + nz, cmp_record_key_row);
 }
 
 void records_reorder_by_columns(const int &nz, record_t *records) {
-  std::sort(records, records + nz, cmp_key_column);
+  std::sort(records, records + nz, cmp_record_key_column);
 }
 
 // source vector x random generation
@@ -124,11 +153,66 @@ bool check(const size_t &len, double *output, double *result) {
   for (std::size_t i = 0; i < len; ++i) {
     if ((output[i] - result[i]) > ESP) {
       pass = false;
-      printf("fail at index %lu, out: %lf real: %lf \n", i, output[i], result[i]);
-      //break;
+      printf("fail at index %lu, out: %lf real: %lf \n", i, output[i],
+             result[i]);
+      // break;
     }
   }
   return pass;
+}
+
+void cvt2bcsr(const int &Rows, const int &Columns, const int &nz, const int &r,
+              const int &c, record_t *records, const int &block_nz,
+              std::vector<std::pair<int, int>> &block_idx, double *b_values,
+              int *b_col_idx, int *b_row_start) {
+  // 1. get b_row_start
+  // count how many non-zero blocks in one row
+  int *row_tmp = (int *)malloc(Rows / r * sizeof(int));
+  if (!row_tmp) {
+    fprintf(stdout, "%s:%d, Fail to malloc tmp!\n", __FILE__, __LINE__);
+    return;
+  }
+  std::fill(row_tmp, row_tmp + (Rows / r), 0);
+  int i = 0;
+  auto it = block_idx.begin(), ie = block_idx.end();
+  for (; it != ie; ++it, ++i) {
+    ++row_tmp[(*it).first];
+  }
+  b_row_start[0] = 0;
+  for (i = 1; i < (Rows / r) + 1; ++i) {
+    b_row_start[i] = b_row_start[i - 1] + row_tmp[i - 1];
+  }
+  free(row_tmp);
+  b_row_start[Rows / r] = block_nz;
+  // 2. get b_col_idx
+  int j, one_row_count;
+  for (i = 0; i < Rows / r; ++i) {
+    one_row_count = b_row_start[i + 1] - b_row_start[i];
+    block_t *tmp = (block_t*)malloc(one_row_count * sizeof(block_t));
+    // FIXME: no need to sort
+    for (j = 0; j < one_row_count; ++j) {
+      tmp[j] = {block_idx[b_row_start[i] + j].first, block_idx[b_row_start[i] + j].second};
+    }
+    std::sort(tmp, tmp + one_row_count, cmp_block_key_column);
+    for (j = 0; j < one_row_count; ++j) {
+      b_col_idx[b_row_start[i] + j] = tmp[j].c;
+    }
+    free(tmp);
+  }
+  // 3. get b_values
+  for(i = 0; i < nz; ++i) {
+    int _row = records[i].r / r;
+    int _col = records[i].c / c;
+    int off_row = records[i].r % r;
+    int off_col = records[i].c % c;
+    int block_count = 0;
+    for(j = 0; j < block_idx.size(); ++j) {
+      if (block_idx[j]==std::make_pair(_row, _col)) {
+        b_values[block_count * r * c + off_row * r + off_col] = records[i].val;
+      }
+      ++block_count;
+    }
+  }
 }
 
 void cvt2csr(const int &rows, const int &nz, record_t *records, double *nz_vals,
@@ -159,7 +243,7 @@ void cvt2csr(const int &rows, const int &nz, record_t *records, double *nz_vals,
       tmp[j] = records[row_start[i] + j];
     }
     // sort by column
-    std::sort(tmp, tmp + one_row_count, cmp_key_column);
+    std::sort(tmp, tmp + one_row_count, cmp_record_key_column);
     for (j = 0; j < one_row_count; ++j) {
       column_index[row_start[i] + j] = tmp[j].c;
       nz_vals[row_start[i] + j] = tmp[j].val;
@@ -199,7 +283,7 @@ void cvt2csc(const int &columns, const int &nz, record_t *records,
       tmp[j] = records[column_start[i] + j];
     }
     // sort by row
-    std::sort(tmp, tmp + one_column_count, cmp_key_row);
+    std::sort(tmp, tmp + one_column_count, cmp_record_key_row);
     for (j = 0; j < one_column_count; ++j) {
       row_index[column_start[i] + j] = tmp[j].r;
       nz_vals[column_start[i] + j] = tmp[j].val;

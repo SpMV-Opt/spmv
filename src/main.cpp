@@ -139,7 +139,7 @@ int main(int argc, char *argv[]) {
   gettimeofday(&end, NULL);
   //retval = PAPI_read_counters(counters, NUM_EVENTS);
   time_elapsed = (double)(end.tv_sec - begin.tv_sec)+ (end.tv_usec - begin.tv_usec)/1000000.0; 
-  printf("Naive impl wall time: %.3lf ms \n", time_elapsed);
+  printf("Naive impl wall time: %.3lf s \n", time_elapsed);
   //assert(retval == PAPI_OK);
   //printf("Naive impl perf: L2 cache miss %lld, L2 cache misses ratio: %.3lf %, in %lld cycles\n", counters[1], (double)counters[1]/(double)counters[2] * 100, counters[0]); 
 #endif // RESULT_VERIFY
@@ -208,7 +208,7 @@ int main(int argc, char *argv[]) {
   gettimeofday(&end, NULL);
   //retval = PAPI_read_counters(counters, NUM_EVENTS);
   time_elapsed = (double)(end.tv_sec - begin.tv_sec)+ (end.tv_usec - begin.tv_usec)/1000000.0; 
-  printf("CSR / CSR OMP impl wall time: %.3lf ms \n", time_elapsed);
+  printf("CSR / CSR OMP impl wall time: %.3lf s \n", time_elapsed);
   //assert(retval == PAPI_OK);
   //printf("CSR / CSR OMP impl perf: L2 cache miss %lld, L2 cache misses ratio: %.3lf %, in %lld cycles\n", counters[1], (double)counters[1]/(double)counters[2] * 100, counters[0]); 
 #ifdef RESULT_VERIFY
@@ -284,7 +284,7 @@ int main(int argc, char *argv[]) {
   //retval = PAPI_read_counters(counters, NUM_EVENTS);
   //assert(retval == PAPI_OK);
   time_elapsed = (double)(end.tv_sec - begin.tv_sec)+ (end.tv_usec - begin.tv_usec)/1000000.0; 
-  printf("CSC / CSC OMP impl wall time: %.3lf ms \n", time_elapsed);
+  printf("CSC / CSC OMP impl wall time: %.3lf s \n", time_elapsed);
   //printf("CSC / CSC OMP impl perf: L2 cache miss %lld, L2 cache misses ratio: %.3lf %, in %lld cycles\n", counters[1], (double)counters[1]/(double)counters[2] * 100, counters[0]); 
 #ifdef RESULT_VERIFY
   // check CSC correctness

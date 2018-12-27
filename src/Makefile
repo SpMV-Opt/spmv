@@ -16,6 +16,7 @@ endif
 CXX_FLAGS := -std=c++11
 NAIVE_IMPL := -DNAIVE
 CSR_IMPL := -DCSR
+BCSR_IMPL := -DBCSR
 CSC_IMPL := -DCSC
 CSR_OMP_IMPL := -DCSR_OMP
 CSC_OMP_IMPL := -DCSC_OMP
@@ -32,6 +33,7 @@ endif
 # Targets
 NAIVE := naive
 CSR := csr
+BCSR := bcsr
 CSC := csc
 CSR_OMP := csr_omp
 CSC_OMP := csc_omp
@@ -51,6 +53,10 @@ csr: CXX_FLAGS += $(DBG_FLAGS) $(CSR_IMPL) $(PAPI_FLAG)
 csr: csr.o main.o naive.o
 	$(CXX) $(PAPI_LIB) -o $(CSR) $+
 
+bcsr: CXX_FLAGS += $(DBG_FLAGS) $(BCSR_IMPL) $(PAPI_FLAG)
+bcsr: bcsr.o naive.o bcsr_main.o
+	$(CXX) $(PAPI_LIB) -o $(BCSR) $+
+
 csr-omp: CXX_FLAGS += $(DBG_FLAGS) $(CSR_OMP_IMPL) $(PAPI_FLAG)
 csr-omp: csr_omp.o main.o naive.o
 	$(CXX) $(PAPI_LIB) $(OMP_FLAGS) -o $(CSR_OMP) $+
@@ -67,6 +73,12 @@ naive.o: naive.cpp
 	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<
 
 csr.o: csr.cpp
+	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<
+
+bcsr.o: bcsr.cpp
+	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<
+
+bcsr_main.o: bcsr_main.cpp utils.h
 	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<
 
 csc.o: csc.cpp
@@ -86,5 +98,5 @@ main.o: main.cpp utils.h
 	#$(CXX) -fverbose-asm -O3 -g -S main.cpp
 
 clean:
-	@rm -f *.o *.s
+	@rm -f *.o *.s bcsr
 

@@ -26,4 +26,7 @@ void csr(const int &M, double *nz_vals, int *column_index, int *row_start,
 void csc(const int &M, double *nz_vals, int *row_index, int *column_start,
          double *x, double *y);
 
+void bcsr_2x2(int bm, const int *b_row_start, const int *b_col_idx,
+              const double *b_values, double *x, double *y);
+
 #endif // _SPMV_OPT_H

@@ -26,7 +26,7 @@ void bcsr_2x2(int bm, const int *b_row_start, const int *b_col_idx,
     d0 = y[2 * i];
     d1 = y[2 * i + 1];
     for (j = b_row_start[i]; j < b_row_start[i + 1]; ++j, b_values += 2 * 2) {
-      c0 = x[2 * b_col_idx[j] + 0]; 
+      c0 = x[2 * b_col_idx[j] + 0];
       c1 = x[2 * b_col_idx[j] + 1];
       d0 += b_values[0] * c0;
       d1 += b_values[2] * c0;
