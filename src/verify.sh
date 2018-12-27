@@ -42,7 +42,7 @@ verify() {
     else
         echo "PASS!"
     fi
-    #rm $CSC $CSR $CSR_OMP $CSC_OMP
+    rm $CSC $CSR $CSR_OMP $CSC_OMP verify.log
 }
 build
 verify

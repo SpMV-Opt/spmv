@@ -3,7 +3,6 @@
  *
  */
 
-// bm: non-zero block rows of sparse matrix
 void bcsr_1x1(int bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, double *x, double *y) {
   int i, j;
@@ -25,11 +24,9 @@ void bcsr_2x2(int bm, const int *b_row_start, const int *b_col_idx,
   /* loop over bm block rows */
   for (i = 0; i < bm; ++i) {
     d0 = y[2 * i];
-    /* scalar replacement since reused */
     d1 = y[2 * i + 1];
-    /* dense micro MVM */
     for (j = b_row_start[i]; j < b_row_start[i + 1]; ++j, b_values += 2 * 2) {
-      c0 = x[2 * b_col_idx[j] + 0]; /* scalar replacement since reused */
+      c0 = x[2 * b_col_idx[j] + 0]; 
       c1 = x[2 * b_col_idx[j] + 1];
       d0 += b_values[0] * c0;
       d1 += b_values[2] * c0;
