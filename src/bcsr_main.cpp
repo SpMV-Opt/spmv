@@ -74,11 +74,11 @@ int main(int argc, char *argv[]) {
   int r = atoi(argv[2]);
   int c = atoi(argv[3]);
 
-  // parse matrix size from input matrix market file
+  // get matrix size from input matrix market file
   get_matrix_size(argv[1], rows, columns, nz);
   // ceil original matrix size
   int Rows = r * (int)ceil(rows / r);
-  int Columns = c * (int)ceil(Columns / c);
+  int Columns = c * (int)ceil(columns / c);
   int bm = (int)ceil(rows / r);
   int bn = (int)ceil(columns / c);
 
@@ -101,7 +101,7 @@ int main(int argc, char *argv[]) {
   }
   std::fill(y, y + Rows, 0.0);
 
-  /// =============== Naive impl for result verify ===================
+  /// ========= Naive impl for result correctness verify =============
 #ifdef RESULT_VERIFY
   // I: x-axis row index, J: y-axis column index, val: non-zero value
   int *I, *J;
@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
     exit(-1);
   }
 
-  // parse matrix non-zero values from input matrix market file
+  // get matrix non-zero values from input matrix market file
   get_matrix(argv[1], I, J, val);
   // input sparse matrix A
   double *A = (double *)malloc(Rows * Columns * sizeof(double));
@@ -168,7 +168,6 @@ int main(int argc, char *argv[]) {
 
   /// ===================== BCSR impl ==========================
   std::fill(y, y + Rows, 0.0);
-#ifdef BCSR 
   // reorder the records with increase order by the row
   records_reorder_by_rows(nz, records);
 #ifdef DEBUG
@@ -186,25 +185,31 @@ int main(int argc, char *argv[]) {
     fprintf(stdout, "%s:%d, fail to malloc b_values!\n", __FILE__, __LINE__);
     exit(-1);
   }
+  std::fill(b_values, b_values + r * c * block_nz, 0.0);
   int *b_col_idx = (int*)malloc(block_nz * sizeof(int));
   if (!b_col_idx) {
     fprintf(stdout, "%s:%d, fail to malloc b_col_idx!\n", __FILE__, __LINE__);
     exit(-1);
   }
-  int *b_row_start = (int*)malloc((Rows / r + 1) * sizeof(int));
+  std::fill(b_col_idx, b_col_idx + block_nz, 0);
+  int *b_row_start = (int*)malloc((bm + 1) * sizeof(int));
   if (!b_row_start) {
     fprintf(stdout, "%s:%d, fail to malloc b_row_start!\n", __FILE__, __LINE__);
     exit(-1);
   }
-  cvt2bcsr(Rows, Columns, nz, r, c, records, block_nz, block_idx, b_values, b_col_idx, b_row_start);
+  std::fill(b_row_start, b_row_start + (bm + 1), 0);
+  cvt2bcsr(Rows, nz, r, c, records, block_nz, block_idx, b_values, b_col_idx, b_row_start);
 #ifdef DEBUG
-  fprintf(stdout, "Rows: %d, Columns: %d\n", Rows, Columns);
+  fprintf(stdout, "=== Rows: %d, Columns: %d, nz: %d, r: %d, c: %d\n", Rows, Columns, nz, r, c);
 #endif // DEBUG
   // 2. BCSR implement
   // retval = PAPI_start_counters(PAPI_events, NUM_EVENTS);
   gettimeofday(&begin, NULL);
   bcsr_2x2(bm, b_row_start, b_col_idx, b_values, x, y);
   gettimeofday(&end, NULL);
+  free(b_row_start);
+  free(b_col_idx);
+  free(b_values);
   // retval = PAPI_read_counters(counters, NUM_EVENTS);
   time_elapsed = (double)(end.tv_sec - begin.tv_sec) +
                  (end.tv_usec - begin.tv_usec) / 1000000.0;
@@ -221,10 +226,6 @@ int main(int argc, char *argv[]) {
     fprintf(stdout, "FAILED\n");
   }
 #endif // RESULT_VERIFY
-  free(b_values);
-  free(b_col_idx);
-  free(b_row_start);
-#endif // BCSR
   /// ===========================================================
 
   // memory release
