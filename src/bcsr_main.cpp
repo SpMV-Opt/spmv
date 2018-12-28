@@ -73,33 +73,34 @@ int main(int argc, char *argv[]) {
   int rows, columns, nz;
   int r = atoi(argv[2]);
   int c = atoi(argv[3]);
+  BCSR_FP bcsr_func = bcsr_routines[r-1][c-1][0];
 
   // get matrix size from input matrix market file
   get_matrix_size(argv[1], rows, columns, nz);
   // ceil original matrix size
-  int Rows = r * (int)ceil(rows / r);
-  int Columns = c * (int)ceil(columns / c);
-  int bm = (int)ceil(rows / r);
-  int bn = (int)ceil(columns / c);
+  int ROWS = r * (int)ceil((double)(rows) / r);
+  int COLS = c * (int)ceil((double)(columns) / c);
+  int bm = (int)ceil((double)(rows) / r);
+  int bn = (int)ceil((double)(columns) / c);
 
 #ifdef DEBUG
-  fprintf(stdout, "rows:%d columns:%d nz:%d Rows:%d Columns:%d\n", rows, columns, nz, Rows, Columns);
+  fprintf(stdout, "rows:%d columns:%d nz:%d ROWS:%d COLS:%d\n", rows, columns, nz, ROWS, COLS);
 #endif // DEBUG
 
   // source vector x random generation
-  double *x = (double *)malloc(Columns * sizeof(double));
+  double *x = (double *)malloc(COLS * sizeof(double));
   if (!x) {
     fprintf(stdout, "%s:%d, fail to malloc x!\n", __FILE__, __LINE__);
     exit(-1);
   }
-  rand_gen(Columns, x);
+  rand_gen(COLS, x);
   // destination vector y for output
-  double *y = (double *)malloc(Rows * sizeof(double));
+  double *y = (double *)malloc(ROWS * sizeof(double));
   if (!y) {
     fprintf(stdout, "%s:%d, fail to malloc y!\n", __FILE__, __LINE__);
     exit(-1);
   }
-  std::fill(y, y + Rows, 0.0);
+  std::fill(y, y + ROWS, 0.0);
 
   /// ========= Naive impl for result correctness verify =============
 #ifdef RESULT_VERIFY
@@ -125,27 +126,27 @@ int main(int argc, char *argv[]) {
   // get matrix non-zero values from input matrix market file
   get_matrix(argv[1], I, J, val);
   // input sparse matrix A
-  double *A = (double *)malloc(Rows * Columns * sizeof(double));
+  double *A = (double *)malloc(ROWS * COLS * sizeof(double));
   if (!A) {
     fprintf(stdout, "%s:%d, fail to malloc A!\n", __FILE__, __LINE__);
     exit(-1);
   }
-  std::fill(A, A + Rows * Columns, 0.0);
+  std::fill(A, A + ROWS * COLS, 0.0);
   for (int i = 0; i < nz; ++i) {
-    A[I[i] * Columns + J[i]] = val[i];
+    A[I[i] * COLS + J[i]] = val[i];
   }
 
   // naive implement to check the correctness of other optimizers
-  double *result = (double *)malloc(Rows * sizeof(double));
+  double *result = (double *)malloc(ROWS * sizeof(double));
   if (!result) {
     fprintf(stdout, "%s:%d, fail to malloc result!\n", __FILE__, __LINE__);
     exit(-1);
   }
-  std::fill(result, result + Rows, 0.0);
+  std::fill(result, result + ROWS, 0.0);
   // 1. naive implement
   // retval = PAPI_start_counters(PAPI_events, NUM_EVENTS);
   gettimeofday(&begin, NULL);
-  naive(Rows, Columns, A, x, result);
+  naive(ROWS, COLS, A, x, result);
   gettimeofday(&end, NULL);
   // retval = PAPI_read_counters(counters, NUM_EVENTS);
   time_elapsed = (double)(end.tv_sec - begin.tv_sec) +
@@ -167,17 +168,21 @@ int main(int argc, char *argv[]) {
   get_records(argv[1], records);
 
   /// ===================== BCSR impl ==========================
-  std::fill(y, y + Rows, 0.0);
+  std::fill(y, y + ROWS, 0.0);
   // reorder the records with increase order by the row
   records_reorder_by_rows(nz, records);
 #ifdef DEBUG
-  fprintf(stdout, "After sort:\n");
-  for (int i = 0; i < nz; ++i) {
-    fprintf(stdout, "%d %d %f\n", records[i].r, records[i].c, records[i].val);
-  }
+  //fprintf(stdout, "After sort:\n");
+  //for (int i = 0; i < nz; ++i) {
+  //  fprintf(stdout, "%d %d %f\n", records[i].r, records[i].c, records[i].val);
+  //}
 #endif // DEBUG
   std::vector<std::pair<int, int>> block_idx;
   get_bcsr_block_idx(records, nz, r, c, block_idx);
+#ifdef DEBUG
+  //fprintf(stdout, "==> block_idx dump:\n");
+  //for(int i = 0; i < block_idx.size(); ++i) fprintf(stdout, "%d %d ", block_idx[i].first, block_idx[i].second);
+#endif // DEBUG
   int block_nz = block_idx.size();
   // transform sparse matrix into bcsr format
   double *b_values = (double*)malloc(r * c * block_nz * sizeof(double));
@@ -198,14 +203,27 @@ int main(int argc, char *argv[]) {
     exit(-1);
   }
   std::fill(b_row_start, b_row_start + (bm + 1), 0);
-  cvt2bcsr(Rows, nz, r, c, records, block_nz, block_idx, b_values, b_col_idx, b_row_start);
+  cvt2bcsr(ROWS, nz, r, c, records, block_nz, block_idx, b_values, b_col_idx, b_row_start);
 #ifdef DEBUG
-  fprintf(stdout, "=== Rows: %d, Columns: %d, nz: %d, r: %d, c: %d\n", Rows, Columns, nz, r, c);
+  //fprintf(stdout, "\n==> nz: %d, ROWS: %d, COLS: %d, bm: %d, bn: %d, r: %d, c: %d, block_nz: %d\n", nz, ROWS, COLS, bm, bn, r, c, block_nz);
+  //fprintf(stdout, "b_values: ");
+  //for(int i = 0; i < r * c * block_nz; ++i)
+  //  if ((i + 1) % (r * c) == 0)
+  //    fprintf(stdout, "%lf - ", b_values[i]);
+  //  else
+  //    fprintf(stdout, "%lf ", b_values[i]);
+  //fprintf(stdout, "\nb_col_idx: ");
+  //for(int i = 0; i < block_nz; ++i)
+  //  fprintf(stdout, "%d ", b_col_idx[i]);
+  //fprintf(stdout, "\nb_row_start: ");
+  //for(int i = 0; i < (bm + 1); ++i)
+  //  fprintf(stdout, "%d ", b_row_start[i]);
+  //fprintf(stdout, "\n");
 #endif // DEBUG
   // 2. BCSR implement
   // retval = PAPI_start_counters(PAPI_events, NUM_EVENTS);
   gettimeofday(&begin, NULL);
-  bcsr_2x2(bm, b_row_start, b_col_idx, b_values, x, y);
+  bcsr_func(bm, b_row_start, b_col_idx, b_values, x, y);
   gettimeofday(&end, NULL);
   free(b_row_start);
   free(b_col_idx);
@@ -218,11 +236,11 @@ int main(int argc, char *argv[]) {
   // printf("BCSR impl perf: L2 cache miss %lld, L2 cache misses ratio: %.3lf %, in %lld cycles\n", counters[1], (double)counters[1]/(double)counters[2] * 100, counters[0]);
 #ifdef RESULT_VERIFY
   // check BCSR correctness
-  if (check(Rows, y, result)) {
+  if (check(ROWS, y, result)) {
     fprintf(stdout, "PASS\n");
   } else {
-    for (int i = 0; i < Rows; ++i)
-      fprintf(stdout, "y: %lf result: %lf\n", y[i], result[i]);
+    //for (int i = 0; i < ROWS; ++i)
+    //  fprintf(stdout, "y: %lf expected: %lf\n", y[i], result[i]);
     fprintf(stdout, "FAILED\n");
   }
 #endif // RESULT_VERIFY

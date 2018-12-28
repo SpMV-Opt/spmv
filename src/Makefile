@@ -98,5 +98,5 @@ main.o: main.cpp utils.h
 	#$(CXX) -fverbose-asm -O3 -g -S main.cpp
 
 clean:
-	@rm -f *.o *.s bcsr
+	@rm -f *.o *.s
 

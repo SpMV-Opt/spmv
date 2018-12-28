@@ -14,7 +14,7 @@
 #include <tuple>
 #include <vector>
 
-#define RANDOM_MAX 5
+#define RANDOM_MAX 2
 #define ESP 1e-6
 
 typedef struct {
@@ -164,7 +164,7 @@ bool check(const size_t &len, double *output, double *result) {
   for (std::size_t i = 0; i < len; ++i) {
     if ((output[i] - result[i]) > ESP) {
       pass = false;
-      printf("fail at index %lu, out: %lf real: %lf \n", i, output[i],
+      printf("fail at index %lu, out: %lf expected: %lf \n", i, output[i],
              result[i]);
       // break;
     }
@@ -174,7 +174,7 @@ bool check(const size_t &len, double *output, double *result) {
 
 void cvt2bcsr(const int &Rows, const int &nz, const int &r, const int &c,
               record_t *records, const int &block_nz,
-              std::vector<std::pair<int, int>> &block_idx, double *b_values,
+              const std::vector<std::pair<int, int>> &block_idx, double *b_values,
               int *b_col_idx, int *b_row_start) {
   // 1. get b_row_start
   // count how many non-zero blocks in one row
@@ -217,13 +217,11 @@ void cvt2bcsr(const int &Rows, const int &nz, const int &r, const int &c,
     int _col = records[i].c / c;
     int off_row = records[i].r % r;
     int off_col = records[i].c % c;
-    int block_count = 0;
     for (j = 0; j < block_idx.size(); ++j) {
       if (block_idx[j] == std::make_pair(_row, _col)) {
-        b_values[block_count * r * c + off_row * r + off_col] = records[i].val;
+        b_values[j * r * c + off_row * c + off_col] = records[i].val;
         break;
       }
-      ++block_count;
     }
   }
 }
