@@ -6,6 +6,7 @@
 #define _UTILS_H_
 
 #include <algorithm>
+#include <bitset>
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
@@ -40,7 +41,8 @@ bool cmp_block_key_column(const block_t &a, const block_t &b) {
   return a.c < b.c;
 }
 
-bool cmp_block_pair(const std::pair<int, int> &a, const std::pair<int, int> &b) {
+bool cmp_block_pair(const std::pair<int, int> &a,
+                    const std::pair<int, int> &b) {
   if (a.first != b.first)
     return a.first < b.first;
   return a.second < b.second;
@@ -91,23 +93,42 @@ void get_matrix(const char *file_name, int *I, int *J, double *val) {
   in.close();
 }
 
-void get_bcsr_block_idx(record_t *records, const int &nz, const int &_r,
-                        const int &_c,
+void get_bcsr_block_idx(const int &ROWS, const int &COLS, record_t *records,
+                        const int &nz, const int &_r, const int &_c,
                         std::vector<std::pair<int, int>> &block_idx) {
-  for (int i = 0; i < nz; ++i) {
-    std::pair<int, int> t =
-        std::make_pair(records[i].r / _r, records[i].c / _c);
-
-    bool flag = false;
-    for (int j = 0; j < block_idx.size(); ++j) {
-      if (t == block_idx[j]) {
-        flag = true;
-        break;
-      }
-    }
-    if (!flag)
-      block_idx.push_back(t);
+  int block_col = COLS / _c;
+  int block_row = ROWS / _r;
+  int bit_size = block_row * block_col;
+  // std::bitset<bit_size> bit_map;
+  bool *bit_map = (bool *)malloc(bit_size * sizeof(bool));
+  std::fill(bit_map, bit_map + bit_size, false);
+  if (!bit_map) {
+    fprintf(stdout, "%s:%d, fail to malloc bit_map!\n", __FILE__, __LINE__);
+    return;
   }
+  for (int i = 0; i < nz; ++i) {
+    bit_map[records[i].r / _r * block_col + records[i].c / _c] = true;
+    /*
+        std::pair<int, int> t =
+            std::make_pair(records[i].r / _r, records[i].c / _c);
+
+        bool flag = false;
+        for (int j = 0; j < block_idx.size(); ++j) {
+          if (t == block_idx[j]) {
+            flag = true;
+            break;
+          }
+        }
+        if (!flag)
+          block_idx.push_back(t);
+    */
+  }
+  for (int i = 0; i < bit_size; ++i) {
+    if (bit_map[i]) {
+      block_idx.push_back({i / block_col, i % block_col});
+    }
+  }
+  free(bit_map);
   std::sort(block_idx.begin(), block_idx.end(), cmp_block_pair);
 }
 
@@ -174,8 +195,8 @@ bool check(const size_t &len, double *output, double *result) {
 
 void cvt2bcsr(const int &Rows, const int &nz, const int &r, const int &c,
               record_t *records, const int &block_nz,
-              const std::vector<std::pair<int, int>> &block_idx, double *b_values,
-              int *b_col_idx, int *b_row_start) {
+              const std::vector<std::pair<int, int>> &block_idx,
+              double *b_values, int *b_col_idx, int *b_row_start) {
   // 1. get b_row_start
   // count how many non-zero blocks in one row
   int *row_tmp = (int *)malloc((Rows / r) * sizeof(int));

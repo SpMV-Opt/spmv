@@ -178,10 +178,10 @@ int main(int argc, char *argv[]) {
   //}
 #endif // DEBUG
   std::vector<std::pair<int, int>> block_idx;
-  get_bcsr_block_idx(records, nz, r, c, block_idx);
+  get_bcsr_block_idx(ROWS, COLS, records, nz, r, c, block_idx);
 #ifdef DEBUG
-  //fprintf(stdout, "==> block_idx dump:\n");
-  //for(int i = 0; i < block_idx.size(); ++i) fprintf(stdout, "%d %d ", block_idx[i].first, block_idx[i].second);
+  fprintf(stdout, "==> block_idx dump:\n");
+  for(int i = 0; i < block_idx.size(); ++i) fprintf(stdout, "%d %d\n", block_idx[i].first, block_idx[i].second);
 #endif // DEBUG
   int block_nz = block_idx.size();
   // transform sparse matrix into bcsr format
