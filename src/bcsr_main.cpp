@@ -158,7 +158,7 @@ int main(int argc, char *argv[]) {
   // 100, counters[0]);
 #endif // RESULT_VERIFY
   /// ==========================================================
-
+#if 0
   record_t *records = (record_t *)malloc(nz * sizeof(record_t));
   if (!records) {
     fprintf(stdout, "%s:%d, fail to malloc records!\n", __FILE__, __LINE__);
@@ -169,8 +169,10 @@ int main(int argc, char *argv[]) {
 
   /// ===================== BCSR impl ==========================
   std::fill(y, y + ROWS, 0.0);
-  // reorder the records with increase order by the row
-  records_reorder_by_rows(nz, records);
+  // reorder the records with increase order by the row major and column
+  records_reorder_by_rows_columns(nz, records);
+#endif
+
 #ifdef DEBUG
   //fprintf(stdout, "After sort:\n");
   //for (int i = 0; i < nz; ++i) {
@@ -178,7 +180,7 @@ int main(int argc, char *argv[]) {
   //}
 #endif // DEBUG
   std::vector<std::pair<int, int>> block_idx;
-  get_bcsr_block_idx(ROWS, COLS, records, nz, r, c, block_idx);
+  get_bcsr_block_idx(ROWS, COLS, argv[1], nz, r, c, block_idx);
 #ifdef DEBUG
   fprintf(stdout, "==> block_idx dump:\n");
   for(int i = 0; i < block_idx.size(); ++i) fprintf(stdout, "%d %d\n", block_idx[i].first, block_idx[i].second);
@@ -203,7 +205,7 @@ int main(int argc, char *argv[]) {
     exit(-1);
   }
   std::fill(b_row_start, b_row_start + (bm + 1), 0);
-  cvt2bcsr(ROWS, nz, r, c, records, block_nz, block_idx, b_values, b_col_idx, b_row_start);
+  cvt2bcsr(ROWS, nz, r, c, argv[1], block_nz, block_idx, b_values, b_col_idx, b_row_start);
 #ifdef DEBUG
   //fprintf(stdout, "\n==> nz: %d, ROWS: %d, COLS: %d, bm: %d, bn: %d, r: %d, c: %d, block_nz: %d\n", nz, ROWS, COLS, bm, bn, r, c, block_nz);
   //fprintf(stdout, "b_values: ");
@@ -254,7 +256,7 @@ int main(int argc, char *argv[]) {
   free(A);
   free(result);
 #endif // RESULT_VERIFY
-  free(records);
+  //free(records);
   free(x);
   free(y);
   return 0;

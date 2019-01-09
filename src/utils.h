@@ -14,6 +14,8 @@
 #include <string>
 #include <tuple>
 #include <vector>
+#include <map>
+#include <unordered_map>
 
 #define RANDOM_MAX 2
 #define ESP 1e-6
@@ -32,6 +34,12 @@ bool cmp_record_key_row(const record_t &a, const record_t &b) {
 }
 
 bool cmp_record_key_column(const record_t &a, const record_t &b) {
+  return a.c < b.c;
+}
+
+bool cmp_record_row_col(const record_t &a, const record_t &b) {
+  if (a.r != b.r)
+    return a.r < b.r;
   return a.c < b.c;
 }
 
@@ -93,7 +101,7 @@ void get_matrix(const char *file_name, int *I, int *J, double *val) {
   in.close();
 }
 
-void get_bcsr_block_idx(const int &ROWS, const int &COLS, record_t *records,
+void get_bcsr_block_idx(const int &ROWS, const int &COLS, const char *file_name,
                         const int &nz, const int &_r, const int &_c,
                         std::vector<std::pair<int, int>> &block_idx) {
   int block_col = COLS / _c;
@@ -106,23 +114,30 @@ void get_bcsr_block_idx(const int &ROWS, const int &COLS, record_t *records,
     fprintf(stdout, "%s:%d, fail to malloc bit_map!\n", __FILE__, __LINE__);
     return;
   }
-  for (int i = 0; i < nz; ++i) {
-    bit_map[records[i].r / _r * block_col + records[i].c / _c] = true;
-    /*
-        std::pair<int, int> t =
-            std::make_pair(records[i].r / _r, records[i].c / _c);
-
-        bool flag = false;
-        for (int j = 0; j < block_idx.size(); ++j) {
-          if (t == block_idx[j]) {
-            flag = true;
-            break;
-          }
-        }
-        if (!flag)
-          block_idx.push_back(t);
-    */
+  std::ifstream in;
+  in.open(file_name);
+  if (!in.is_open()) {
+    fprintf(stderr, "Fail to open file: %s\n", file_name);
   }
+  int _M, _N, _nz;
+  std::string line;
+  while (std::getline(in, line) && line != "") {
+    // skip the comments
+    if (line[0] == '%')
+      continue;
+    sscanf(line.c_str(), "%d %d %d", &_M, &_N, &_nz);
+    break;
+  }
+  int _row, _col;
+  double _val;
+  for (int i = 0; i < nz; ++i) {
+    std::getline(in, line);
+    sscanf(line.c_str(), "%d %d %lf", &_row, &_col, &_val);
+    _row -= 1;
+    _col -= 1;
+    bit_map[_row / _r * block_col + _col / _c] = true;
+  }
+  in.close();
   for (int i = 0; i < bit_size; ++i) {
     if (bit_map[i]) {
       block_idx.push_back({i / block_col, i % block_col});
@@ -169,6 +184,10 @@ void records_reorder_by_columns(const int &nz, record_t *records) {
   std::sort(records, records + nz, cmp_record_key_column);
 }
 
+void records_reorder_by_rows_columns(const int &nz, record_t *records) {
+  std::sort(records, records + nz, cmp_record_key_column);
+}
+
 // source vector x random generation
 void rand_gen(const int &len, double *x) {
   static thread_local std::mt19937 seed;
@@ -194,7 +213,7 @@ bool check(const size_t &len, double *output, double *result) {
 }
 
 void cvt2bcsr(const int &Rows, const int &nz, const int &r, const int &c,
-              record_t *records, const int &block_nz,
+              const char* file_name, const int &block_nz,
               const std::vector<std::pair<int, int>> &block_idx,
               double *b_values, int *b_col_idx, int *b_row_start) {
   // 1. get b_row_start and b_col_idx
@@ -212,20 +231,48 @@ void cvt2bcsr(const int &Rows, const int &nz, const int &r, const int &c,
     }
   }
   b_row_start[Rows / r] = block_nz;
-
+  // get index hash table
+  using idx_hash_t = std::map<std::pair<int, int>, int>;
+  idx_hash_t fuck_hash;
+  for (int i = 0; i<block_idx.size(); ++i) {
+    fuck_hash.insert(std::make_pair(block_idx[i], i));
+  }
   // 2. get b_values
+  std::ifstream in;
+  in.open(file_name);
+  if (!in.is_open()) {
+    fprintf(stderr, "Fail to open file: %s\n", file_name);
+  }
+  int _M, _N, _nz;
+  std::string line;
+  while (std::getline(in, line) && line != "") {
+    // skip the comments
+    if (line[0] == '%')
+      continue;
+    sscanf(line.c_str(), "%d %d %d", &_M, &_N, &_nz);
+    break;
+  }
+  int t_row, t_col;
+  double t_val;
   for (int i = 0; i < nz; ++i) {
-    int _row = records[i].r / r;
-    int _col = records[i].c / c;
-    int off_row = records[i].r % r;
-    int off_col = records[i].c % c;
-    for (int j = 0; j < block_idx.size(); ++j) {
+    std::getline(in, line);
+    sscanf(line.c_str(), "%d %d %lf", &t_row, &t_col, &t_val);
+    t_row -= 1;
+    t_col -= 1;
+    int _row = t_row / r;
+    int _col = t_col / c;
+    int off_row = t_row % r;
+    int off_col = t_col % c;
+    /*for (int j = 0; j < block_idx.size(); ++j) {
       if (block_idx[j] == std::make_pair(_row, _col)) {
-        b_values[j * r * c + off_row * c + off_col] = records[i].val;
+        b_values[j * r * c + off_row * c + off_col] = t_val;
         break;
       }
-    }
+    }*/
+    int j = fuck_hash[std::make_pair(_row, _col)];
+    b_values[j * r * c + off_row * c + off_col] = t_val;
   }
+  in.close();
 }
 
 void cvt2csr(const int &rows, const int &nz, record_t *records, double *nz_vals,
