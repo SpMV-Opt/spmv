@@ -47,27 +47,27 @@ INC := .
 # Rules
 naive: CXX_FLAGS += $(DBG_FLAGS) $(NAIVE_IMPL) $(PAPI_FLAG)
 naive: naive.o main.o
-	$(CXX) $(PAPI_LIB) -o $(NAIVE) $+
+	$(CXX) -o $(NAIVE) $+ $(PAPI_LIB)
 
 csr: CXX_FLAGS += $(DBG_FLAGS) $(CSR_IMPL) $(PAPI_FLAG)
 csr: csr.o main.o naive.o
-	$(CXX) $(PAPI_LIB) -o $(CSR) $+
+	$(CXX) -o $(CSR) $+ $(PAPI_LIB)
 
 bcsr: CXX_FLAGS += $(DBG_FLAGS) $(BCSR_IMPL) $(PAPI_FLAG)
 bcsr: bcsr.o naive.o bcsr_main.o
-	$(CXX) $(PAPI_LIB) -o $(BCSR) $+
+	$(CXX) -o $(BCSR) $+ $(PAPI_LIB) 
 
 csr-omp: CXX_FLAGS += $(DBG_FLAGS) $(CSR_OMP_IMPL) $(PAPI_FLAG)
 csr-omp: csr_omp.o main.o naive.o
-	$(CXX) $(PAPI_LIB) $(OMP_FLAGS) -o $(CSR_OMP) $+
+	$(CXX) $(OMP_FLAGS) -o $(CSR_OMP) $+ $(PAPI_LIB)
 
 csc: CXX_FLAGS += $(DBG_FLAGS) $(CSC_IMPL) $(PAPI_FLAG)
 csc: csc.o main.o naive.o
-	$(CXX) $(PAPI_LIB) -o $(CSC) $+
+	$(CXX) -o $(CSC) $+ $(PAPI_LIB)
 
 csc-omp: CXX_FLAGS += $(DBG_FLAGS) $(CSC_OMP_IMPL) $(PAPI_FLAG)
 csc-omp: csc_omp.o main.o naive.o
-	$(CXX) $(PAPI_LIB) $(OMP_FLAGS) -o $(CSC_OMP) $+
+	$(CXX) $(OMP_FLAGS) -o $(CSC_OMP) $+ $(PAPI_LIB)
 
 naive.o: naive.cpp
 	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<

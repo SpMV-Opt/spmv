@@ -40,7 +40,7 @@ bool cmp_block_key_column(const block_t &a, const block_t &b) {
   return a.c < b.c;
 }
 
-bool cmp_block_pair(const std::pair<int, int> &a, std::pair<int, int> &b) {
+bool cmp_block_pair(const std::pair<int, int> &a, const std::pair<int, int> &b) {
   if (a.first != b.first)
     return a.first < b.first;
   return a.second < b.second;
