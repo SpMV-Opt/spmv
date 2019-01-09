@@ -197,48 +197,29 @@ void cvt2bcsr(const int &Rows, const int &nz, const int &r, const int &c,
               record_t *records, const int &block_nz,
               const std::vector<std::pair<int, int>> &block_idx,
               double *b_values, int *b_col_idx, int *b_row_start) {
-  // 1. get b_row_start
-  // count how many non-zero blocks in one row
-  int *row_tmp = (int *)malloc((Rows / r) * sizeof(int));
-  if (!row_tmp) {
-    fprintf(stdout, "%s:%d, Fail to malloc tmp!\n", __FILE__, __LINE__);
-    return;
-  }
-  std::fill(row_tmp, row_tmp + (Rows / r), 0);
-  int i = 0;
-  auto it = block_idx.begin(), ie = block_idx.end();
-  for (; it != ie; ++it, ++i) {
-    ++row_tmp[(*it).first];
-  }
+  // 1. get b_row_start and b_col_idx
   b_row_start[0] = 0;
-  for (i = 1; i < (Rows / r) + 1; ++i) {
-    b_row_start[i] = b_row_start[i - 1] + row_tmp[i - 1];
+  b_col_idx[0] = block_idx[0].second;
+  int before = block_idx[0].first;
+  int current;
+  int b_row_start_count = 0;
+  for (int i = 1; i < block_idx.size(); ++i) {
+    before = block_idx[i - 1].first;
+    current = block_idx[i].first;
+    b_col_idx[i] = block_idx[i].second;
+    if (current != before) {
+      b_row_start[++b_row_start_count] = i;
+    }
   }
-  free(row_tmp);
   b_row_start[Rows / r] = block_nz;
-  // 2. get b_col_idx
-  int j, one_row_count;
-  for (i = 0; i < Rows / r; ++i) {
-    one_row_count = b_row_start[i + 1] - b_row_start[i];
-    block_t *tmp = (block_t *)malloc(one_row_count * sizeof(block_t));
-    // FIXME: no need to sort
-    for (j = 0; j < one_row_count; ++j) {
-      tmp[j] = {block_idx[b_row_start[i] + j].first,
-                block_idx[b_row_start[i] + j].second};
-    }
-    std::sort(tmp, tmp + one_row_count, cmp_block_key_column);
-    for (j = 0; j < one_row_count; ++j) {
-      b_col_idx[b_row_start[i] + j] = tmp[j].c;
-    }
-    free(tmp);
-  }
-  // 3. get b_values
-  for (i = 0; i < nz; ++i) {
+
+  // 2. get b_values
+  for (int i = 0; i < nz; ++i) {
     int _row = records[i].r / r;
     int _col = records[i].c / c;
     int off_row = records[i].r % r;
     int off_col = records[i].c % c;
-    for (j = 0; j < block_idx.size(); ++j) {
+    for (int j = 0; j < block_idx.size(); ++j) {
       if (block_idx[j] == std::make_pair(_row, _col)) {
         b_values[j * r * c + off_row * c + off_col] = records[i].val;
         break;
