@@ -10,12 +10,12 @@
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
+#include <map>
 #include <random>
 #include <string>
 #include <tuple>
-#include <vector>
-#include <map>
 #include <unordered_map>
+#include <vector>
 
 #define RANDOM_MAX 2
 #define ESP 1e-6
@@ -55,6 +55,18 @@ bool cmp_block_pair(const std::pair<int, int> &a,
     return a.first < b.first;
   return a.second < b.second;
 }
+
+struct pair_hash {
+  template <class T1, class T2>
+  std::size_t operator()(const std::pair<T1, T2> &p) const {
+    auto h1 = std::hash<T1>{}(p.first);
+    auto h2 = std::hash<T2>{}(p.second);
+
+    // Mainly for demonstration purposes, i.e. works but is overly simple
+    // In the real world, use sth. like boost.hash_combine
+    return h1 ^ h2;
+  }
+};
 
 // M: rows, N: columns, nz: number of non-zero elems
 void get_matrix_size(const char *file_name, int &M, int &N, int &nz) {
@@ -213,7 +225,7 @@ bool check(const size_t &len, double *output, double *result) {
 }
 
 void cvt2bcsr(const int &Rows, const int &nz, const int &r, const int &c,
-              const char* file_name, const int &block_nz,
+              const char *file_name, const int &block_nz,
               const std::vector<std::pair<int, int>> &block_idx,
               double *b_values, int *b_col_idx, int *b_row_start) {
   // 1. get b_row_start and b_col_idx
@@ -232,9 +244,9 @@ void cvt2bcsr(const int &Rows, const int &nz, const int &r, const int &c,
   }
   b_row_start[Rows / r] = block_nz;
   // get index hash table
-  using idx_hash_t = std::map<std::pair<int, int>, int>;
+  using idx_hash_t = std::unordered_map<std::pair<int, int>, int, pair_hash>;
   idx_hash_t fuck_hash;
-  for (int i = 0; i<block_idx.size(); ++i) {
+  for (int i = 0; i < block_idx.size(); ++i) {
     fuck_hash.insert(std::make_pair(block_idx[i], i));
   }
   // 2. get b_values
