@@ -55,7 +55,7 @@ csr: csr.o main.o naive.o
 
 bcsr: CXX_FLAGS += $(DBG_FLAGS) $(BCSR_IMPL) $(PAPI_FLAG)
 bcsr: bcsr.o naive.o bcsr_main.o
-	$(CXX) -o $(BCSR) $+ $(PAPI_LIB) 
+	$(CXX) $(OMP_FLAGS) -o $(BCSR) $+ $(PAPI_LIB) 
 
 csr-omp: CXX_FLAGS += $(DBG_FLAGS) $(CSR_OMP_IMPL) $(PAPI_FLAG)
 csr-omp: csr_omp.o main.o naive.o
@@ -76,7 +76,7 @@ csr.o: csr.cpp
 	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<
 
 bcsr.o: bcsr.cpp
-	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<
+	$(CXX) -I $(INC) $(OMP_FLAGS) $(CXX_FLAGS) -o $@ -c $<
 
 bcsr_main.o: bcsr_main.cpp utils.h
 	$(CXX) -I $(INC) $(CXX_FLAGS) -o $@ -c $<

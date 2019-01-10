@@ -153,6 +153,7 @@ void bcsr_1x1(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, x0;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[1 * i + 0];
     for (j = b_row_start[i]; j < b_row_start[i + 1]; ++j, b_values += 1 * 1) {
@@ -167,6 +168,7 @@ void bcsr_1x2(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, x0, x1;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[1 * i + 0];
     for (j = b_row_start[i]; j < b_row_start[i + 1]; ++j, b_values += 1 * 2) {
@@ -183,6 +185,7 @@ void bcsr_1x3(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, x0, x1, x2;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[1 * i + 0];
     for (j = b_row_start[i]; j < b_row_start[i + 1]; ++j, b_values += 1 * 3) {
@@ -201,6 +204,7 @@ void bcsr_1x4(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, x0, x1, x2, x3;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[1 * i + 0];
     for (j = b_row_start[i]; j < b_row_start[i + 1]; ++j, b_values += 1 * 4) {
@@ -221,6 +225,7 @@ void bcsr_1x5(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, x0, x1, x2, x3, x4;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[1 * i + 0];
     for (j = b_row_start[i]; j < b_row_start[i + 1]; ++j, b_values += 1 * 5) {
@@ -243,6 +248,7 @@ void bcsr_1x6(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, x0, x1, x2, x3, x4, x5;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[1 * i + 0];
     for (j = b_row_start[i]; j < b_row_start[i + 1]; ++j, b_values += 1 * 6) {
@@ -267,6 +273,7 @@ void bcsr_1x7(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, x0, x1, x2, x3, x4, x5, x6;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[1 * i + 0];
     for (j = b_row_start[i]; j < b_row_start[i + 1]; ++j, b_values += 1 * 7) {
@@ -293,6 +300,7 @@ void bcsr_1x8(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, x0, x1, x2, x3, x4, x5, x6, x7;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[1 * i + 0];
     for (j = b_row_start[i]; j < b_row_start[i + 1]; ++j, b_values += 1 * 8) {
@@ -321,6 +329,7 @@ void bcsr_1x9(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, x0, x1, x2, x3, x4, x5, x6, x7, x8;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[1 * i + 0];
     for (j = b_row_start[i]; j < b_row_start[i + 1]; ++j, b_values += 1 * 9) {
@@ -351,6 +360,7 @@ void bcsr_1x10(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[1 * i + 0];
     for (j = b_row_start[i]; j < b_row_start[i + 1]; ++j, b_values += 1 * 10) {
@@ -383,6 +393,7 @@ void bcsr_1x11(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[1 * i + 0];
     for (j = b_row_start[i]; j < b_row_start[i + 1]; ++j, b_values += 1 * 11) {
@@ -417,6 +428,7 @@ void bcsr_1x12(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[1 * i + 0];
     for (j = b_row_start[i]; j < b_row_start[i + 1]; ++j, b_values += 1 * 12) {
@@ -453,6 +465,7 @@ void bcsr_2x1(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, x0;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[2 * i + 0];
     d1 = y[2 * i + 1];
@@ -470,6 +483,7 @@ void bcsr_2x2(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, x0, x1;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[2 * i + 0];
     d1 = y[2 * i + 1];
@@ -490,6 +504,7 @@ void bcsr_2x3(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, x0, x1, x2;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[2 * i + 0];
     d1 = y[2 * i + 1];
@@ -513,6 +528,7 @@ void bcsr_2x4(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, x0, x1, x2, x3;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[2 * i + 0];
     d1 = y[2 * i + 1];
@@ -539,6 +555,7 @@ void bcsr_2x5(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, x0, x1, x2, x3, x4;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[2 * i + 0];
     d1 = y[2 * i + 1];
@@ -568,6 +585,7 @@ void bcsr_2x6(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, x0, x1, x2, x3, x4, x5;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[2 * i + 0];
     d1 = y[2 * i + 1];
@@ -600,6 +618,7 @@ void bcsr_2x7(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, x0, x1, x2, x3, x4, x5, x6;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[2 * i + 0];
     d1 = y[2 * i + 1];
@@ -635,6 +654,7 @@ void bcsr_2x8(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, x0, x1, x2, x3, x4, x5, x6, x7;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[2 * i + 0];
     d1 = y[2 * i + 1];
@@ -673,6 +693,7 @@ void bcsr_2x9(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, x0, x1, x2, x3, x4, x5, x6, x7, x8;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[2 * i + 0];
     d1 = y[2 * i + 1];
@@ -714,6 +735,7 @@ void bcsr_2x10(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[2 * i + 0];
     d1 = y[2 * i + 1];
@@ -758,6 +780,7 @@ void bcsr_2x11(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[2 * i + 0];
     d1 = y[2 * i + 1];
@@ -805,6 +828,7 @@ void bcsr_2x12(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[2 * i + 0];
     d1 = y[2 * i + 1];
@@ -855,6 +879,7 @@ void bcsr_3x1(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, x0;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[3 * i + 0];
     d1 = y[3 * i + 1];
@@ -875,6 +900,7 @@ void bcsr_3x2(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, x0, x1;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[3 * i + 0];
     d1 = y[3 * i + 1];
@@ -899,6 +925,7 @@ void bcsr_3x3(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, x0, x1, x2;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[3 * i + 0];
     d1 = y[3 * i + 1];
@@ -927,6 +954,7 @@ void bcsr_3x4(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, x0, x1, x2, x3;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[3 * i + 0];
     d1 = y[3 * i + 1];
@@ -959,6 +987,7 @@ void bcsr_3x5(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, x0, x1, x2, x3, x4;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[3 * i + 0];
     d1 = y[3 * i + 1];
@@ -995,6 +1024,7 @@ void bcsr_3x6(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, x0, x1, x2, x3, x4, x5;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[3 * i + 0];
     d1 = y[3 * i + 1];
@@ -1035,6 +1065,7 @@ void bcsr_3x7(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, x0, x1, x2, x3, x4, x5, x6;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[3 * i + 0];
     d1 = y[3 * i + 1];
@@ -1079,6 +1110,7 @@ void bcsr_3x8(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, x0, x1, x2, x3, x4, x5, x6, x7;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[3 * i + 0];
     d1 = y[3 * i + 1];
@@ -1127,6 +1159,7 @@ void bcsr_3x9(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, x0, x1, x2, x3, x4, x5, x6, x7, x8;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[3 * i + 0];
     d1 = y[3 * i + 1];
@@ -1179,6 +1212,7 @@ void bcsr_3x10(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[3 * i + 0];
     d1 = y[3 * i + 1];
@@ -1235,6 +1269,7 @@ void bcsr_3x11(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[3 * i + 0];
     d1 = y[3 * i + 1];
@@ -1295,6 +1330,7 @@ void bcsr_3x12(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[3 * i + 0];
     d1 = y[3 * i + 1];
@@ -1359,6 +1395,7 @@ void bcsr_4x1(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, x0;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[4 * i + 0];
     d1 = y[4 * i + 1];
@@ -1382,6 +1419,7 @@ void bcsr_4x2(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, x0, x1;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[4 * i + 0];
     d1 = y[4 * i + 1];
@@ -1410,6 +1448,7 @@ void bcsr_4x3(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, x0, x1, x2;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[4 * i + 0];
     d1 = y[4 * i + 1];
@@ -1443,6 +1482,7 @@ void bcsr_4x4(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, x0, x1, x2, x3;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[4 * i + 0];
     d1 = y[4 * i + 1];
@@ -1481,6 +1521,7 @@ void bcsr_4x5(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, x0, x1, x2, x3, x4;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[4 * i + 0];
     d1 = y[4 * i + 1];
@@ -1524,6 +1565,7 @@ void bcsr_4x6(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, x0, x1, x2, x3, x4, x5;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[4 * i + 0];
     d1 = y[4 * i + 1];
@@ -1572,6 +1614,7 @@ void bcsr_4x7(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, x0, x1, x2, x3, x4, x5, x6;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[4 * i + 0];
     d1 = y[4 * i + 1];
@@ -1625,6 +1668,7 @@ void bcsr_4x8(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, x0, x1, x2, x3, x4, x5, x6, x7;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[4 * i + 0];
     d1 = y[4 * i + 1];
@@ -1683,6 +1727,7 @@ void bcsr_4x9(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, x0, x1, x2, x3, x4, x5, x6, x7, x8;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[4 * i + 0];
     d1 = y[4 * i + 1];
@@ -1746,6 +1791,7 @@ void bcsr_4x10(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[4 * i + 0];
     d1 = y[4 * i + 1];
@@ -1814,6 +1860,7 @@ void bcsr_4x11(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[4 * i + 0];
     d1 = y[4 * i + 1];
@@ -1887,6 +1934,7 @@ void bcsr_4x12(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[4 * i + 0];
     d1 = y[4 * i + 1];
@@ -1965,6 +2013,7 @@ void bcsr_5x1(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, x0;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[5 * i + 0];
     d1 = y[5 * i + 1];
@@ -1991,6 +2040,7 @@ void bcsr_5x2(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, x0, x1;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[5 * i + 0];
     d1 = y[5 * i + 1];
@@ -2023,6 +2073,7 @@ void bcsr_5x3(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, x0, x1, x2;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[5 * i + 0];
     d1 = y[5 * i + 1];
@@ -2061,6 +2112,7 @@ void bcsr_5x4(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, x0, x1, x2, x3;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[5 * i + 0];
     d1 = y[5 * i + 1];
@@ -2105,6 +2157,7 @@ void bcsr_5x5(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, x0, x1, x2, x3, x4;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[5 * i + 0];
     d1 = y[5 * i + 1];
@@ -2155,6 +2208,7 @@ void bcsr_5x6(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, x0, x1, x2, x3, x4, x5;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[5 * i + 0];
     d1 = y[5 * i + 1];
@@ -2211,6 +2265,7 @@ void bcsr_5x7(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, x0, x1, x2, x3, x4, x5, x6;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[5 * i + 0];
     d1 = y[5 * i + 1];
@@ -2273,6 +2328,7 @@ void bcsr_5x8(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, x0, x1, x2, x3, x4, x5, x6, x7;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[5 * i + 0];
     d1 = y[5 * i + 1];
@@ -2341,6 +2397,7 @@ void bcsr_5x9(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, x0, x1, x2, x3, x4, x5, x6, x7, x8;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[5 * i + 0];
     d1 = y[5 * i + 1];
@@ -2415,6 +2472,7 @@ void bcsr_5x10(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[5 * i + 0];
     d1 = y[5 * i + 1];
@@ -2495,6 +2553,7 @@ void bcsr_5x11(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[5 * i + 0];
     d1 = y[5 * i + 1];
@@ -2581,6 +2640,7 @@ void bcsr_5x12(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[5 * i + 0];
     d1 = y[5 * i + 1];
@@ -2673,6 +2733,7 @@ void bcsr_6x1(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, x0;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[6 * i + 0];
     d1 = y[6 * i + 1];
@@ -2702,6 +2763,7 @@ void bcsr_6x2(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, x0, x1;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[6 * i + 0];
     d1 = y[6 * i + 1];
@@ -2738,6 +2800,7 @@ void bcsr_6x3(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, x0, x1, x2;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[6 * i + 0];
     d1 = y[6 * i + 1];
@@ -2781,6 +2844,7 @@ void bcsr_6x4(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, x0, x1, x2, x3;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[6 * i + 0];
     d1 = y[6 * i + 1];
@@ -2831,6 +2895,7 @@ void bcsr_6x5(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, x0, x1, x2, x3, x4;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[6 * i + 0];
     d1 = y[6 * i + 1];
@@ -2888,6 +2953,7 @@ void bcsr_6x6(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, x0, x1, x2, x3, x4, x5;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[6 * i + 0];
     d1 = y[6 * i + 1];
@@ -2952,6 +3018,7 @@ void bcsr_6x7(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, x0, x1, x2, x3, x4, x5, x6;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[6 * i + 0];
     d1 = y[6 * i + 1];
@@ -3023,6 +3090,7 @@ void bcsr_6x8(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, x0, x1, x2, x3, x4, x5, x6, x7;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[6 * i + 0];
     d1 = y[6 * i + 1];
@@ -3101,6 +3169,7 @@ void bcsr_6x9(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, x0, x1, x2, x3, x4, x5, x6, x7, x8;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[6 * i + 0];
     d1 = y[6 * i + 1];
@@ -3186,6 +3255,7 @@ void bcsr_6x10(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[6 * i + 0];
     d1 = y[6 * i + 1];
@@ -3278,6 +3348,7 @@ void bcsr_6x11(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[6 * i + 0];
     d1 = y[6 * i + 1];
@@ -3378,6 +3449,7 @@ void bcsr_6x12(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10,
       x11;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[6 * i + 0];
     d1 = y[6 * i + 1];
@@ -3484,6 +3556,7 @@ void bcsr_7x1(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, x0;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[7 * i + 0];
     d1 = y[7 * i + 1];
@@ -3516,6 +3589,7 @@ void bcsr_7x2(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, x0, x1;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[7 * i + 0];
     d1 = y[7 * i + 1];
@@ -3556,6 +3630,7 @@ void bcsr_7x3(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, x0, x1, x2;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[7 * i + 0];
     d1 = y[7 * i + 1];
@@ -3604,6 +3679,7 @@ void bcsr_7x4(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, x0, x1, x2, x3;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[7 * i + 0];
     d1 = y[7 * i + 1];
@@ -3660,6 +3736,7 @@ void bcsr_7x5(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, x0, x1, x2, x3, x4;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[7 * i + 0];
     d1 = y[7 * i + 1];
@@ -3724,6 +3801,7 @@ void bcsr_7x6(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, x0, x1, x2, x3, x4, x5;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[7 * i + 0];
     d1 = y[7 * i + 1];
@@ -3796,6 +3874,7 @@ void bcsr_7x7(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, x0, x1, x2, x3, x4, x5, x6;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[7 * i + 0];
     d1 = y[7 * i + 1];
@@ -3876,6 +3955,7 @@ void bcsr_7x8(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, x0, x1, x2, x3, x4, x5, x6, x7;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[7 * i + 0];
     d1 = y[7 * i + 1];
@@ -3964,6 +4044,7 @@ void bcsr_7x9(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, x0, x1, x2, x3, x4, x5, x6, x7, x8;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[7 * i + 0];
     d1 = y[7 * i + 1];
@@ -4060,6 +4141,7 @@ void bcsr_7x10(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[7 * i + 0];
     d1 = y[7 * i + 1];
@@ -4165,6 +4247,7 @@ void bcsr_7x11(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9,
       x10;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[7 * i + 0];
     d1 = y[7 * i + 1];
@@ -4278,6 +4361,7 @@ void bcsr_7x12(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9,
       x10, x11;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[7 * i + 0];
     d1 = y[7 * i + 1];
@@ -4398,6 +4482,7 @@ void bcsr_8x1(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, x0;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[8 * i + 0];
     d1 = y[8 * i + 1];
@@ -4433,6 +4518,7 @@ void bcsr_8x2(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, x0, x1;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[8 * i + 0];
     d1 = y[8 * i + 1];
@@ -4477,6 +4563,7 @@ void bcsr_8x3(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, x0, x1, x2;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[8 * i + 0];
     d1 = y[8 * i + 1];
@@ -4530,6 +4617,7 @@ void bcsr_8x4(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, x0, x1, x2, x3;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[8 * i + 0];
     d1 = y[8 * i + 1];
@@ -4592,6 +4680,7 @@ void bcsr_8x5(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, x0, x1, x2, x3, x4;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[8 * i + 0];
     d1 = y[8 * i + 1];
@@ -4663,6 +4752,7 @@ void bcsr_8x6(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, x0, x1, x2, x3, x4, x5;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[8 * i + 0];
     d1 = y[8 * i + 1];
@@ -4743,6 +4833,7 @@ void bcsr_8x7(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, x0, x1, x2, x3, x4, x5, x6;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[8 * i + 0];
     d1 = y[8 * i + 1];
@@ -4832,6 +4923,7 @@ void bcsr_8x8(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, x0, x1, x2, x3, x4, x5, x6, x7;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[8 * i + 0];
     d1 = y[8 * i + 1];
@@ -4930,6 +5022,7 @@ void bcsr_8x9(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, x0, x1, x2, x3, x4, x5, x6, x7, x8;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[8 * i + 0];
     d1 = y[8 * i + 1];
@@ -5037,6 +5130,7 @@ void bcsr_8x10(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[8 * i + 0];
     d1 = y[8 * i + 1];
@@ -5154,6 +5248,7 @@ void bcsr_8x11(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9,
       x10;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[8 * i + 0];
     d1 = y[8 * i + 1];
@@ -5280,6 +5375,7 @@ void bcsr_8x12(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, x0, x1, x2, x3, x4, x5, x6, x7, x8, x9,
       x10, x11;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[8 * i + 0];
     d1 = y[8 * i + 1];
@@ -5414,6 +5510,7 @@ void bcsr_9x1(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, x0;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[9 * i + 0];
     d1 = y[9 * i + 1];
@@ -5452,6 +5549,7 @@ void bcsr_9x2(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, x0, x1;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[9 * i + 0];
     d1 = y[9 * i + 1];
@@ -5500,6 +5598,7 @@ void bcsr_9x3(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, x0, x1, x2;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[9 * i + 0];
     d1 = y[9 * i + 1];
@@ -5558,6 +5657,7 @@ void bcsr_9x4(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, x0, x1, x2, x3;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[9 * i + 0];
     d1 = y[9 * i + 1];
@@ -5626,6 +5726,7 @@ void bcsr_9x5(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, x0, x1, x2, x3, x4;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[9 * i + 0];
     d1 = y[9 * i + 1];
@@ -5704,6 +5805,7 @@ void bcsr_9x6(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, x0, x1, x2, x3, x4, x5;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[9 * i + 0];
     d1 = y[9 * i + 1];
@@ -5792,6 +5894,7 @@ void bcsr_9x7(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, x0, x1, x2, x3, x4, x5, x6;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[9 * i + 0];
     d1 = y[9 * i + 1];
@@ -5890,6 +5993,7 @@ void bcsr_9x8(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, x0, x1, x2, x3, x4, x5, x6, x7;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[9 * i + 0];
     d1 = y[9 * i + 1];
@@ -5998,6 +6102,7 @@ void bcsr_9x9(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, x0, x1, x2, x3, x4, x5, x6, x7, x8;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[9 * i + 0];
     d1 = y[9 * i + 1];
@@ -6117,6 +6222,7 @@ void bcsr_9x10(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, x0, x1, x2, x3, x4, x5, x6, x7, x8,
       x9;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[9 * i + 0];
     d1 = y[9 * i + 1];
@@ -6246,6 +6352,7 @@ void bcsr_9x11(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, x0, x1, x2, x3, x4, x5, x6, x7, x8,
       x9, x10;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[9 * i + 0];
     d1 = y[9 * i + 1];
@@ -6385,6 +6492,7 @@ void bcsr_9x12(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, x0, x1, x2, x3, x4, x5, x6, x7, x8,
       x9, x10, x11;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[9 * i + 0];
     d1 = y[9 * i + 1];
@@ -6533,6 +6641,7 @@ void bcsr_10x1(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, x0;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[10 * i + 0];
     d1 = y[10 * i + 1];
@@ -6574,6 +6683,7 @@ void bcsr_10x2(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, x0, x1;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[10 * i + 0];
     d1 = y[10 * i + 1];
@@ -6626,6 +6736,7 @@ void bcsr_10x3(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, x0, x1, x2;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[10 * i + 0];
     d1 = y[10 * i + 1];
@@ -6689,6 +6800,7 @@ void bcsr_10x4(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, x0, x1, x2, x3;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[10 * i + 0];
     d1 = y[10 * i + 1];
@@ -6763,6 +6875,7 @@ void bcsr_10x5(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, x0, x1, x2, x3, x4;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[10 * i + 0];
     d1 = y[10 * i + 1];
@@ -6848,6 +6961,7 @@ void bcsr_10x6(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, x0, x1, x2, x3, x4, x5;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[10 * i + 0];
     d1 = y[10 * i + 1];
@@ -6944,6 +7058,7 @@ void bcsr_10x7(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, x0, x1, x2, x3, x4, x5, x6;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[10 * i + 0];
     d1 = y[10 * i + 1];
@@ -7051,6 +7166,7 @@ void bcsr_10x8(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, x0, x1, x2, x3, x4, x5, x6, x7;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[10 * i + 0];
     d1 = y[10 * i + 1];
@@ -7170,6 +7286,7 @@ void bcsr_10x9(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, x0, x1, x2, x3, x4, x5, x6, x7,
       x8;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[10 * i + 0];
     d1 = y[10 * i + 1];
@@ -7300,6 +7417,7 @@ void bcsr_10x10(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, x0, x1, x2, x3, x4, x5, x6, x7,
       x8, x9;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[10 * i + 0];
     d1 = y[10 * i + 1];
@@ -7441,6 +7559,7 @@ void bcsr_10x11(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, x0, x1, x2, x3, x4, x5, x6, x7,
       x8, x9, x10;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[10 * i + 0];
     d1 = y[10 * i + 1];
@@ -7593,6 +7712,7 @@ void bcsr_10x12(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, x0, x1, x2, x3, x4, x5, x6, x7,
       x8, x9, x10, x11;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[10 * i + 0];
     d1 = y[10 * i + 1];
@@ -7755,6 +7875,7 @@ void bcsr_11x1(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, x0;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[11 * i + 0];
     d1 = y[11 * i + 1];
@@ -7799,6 +7920,7 @@ void bcsr_11x2(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, x0, x1;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[11 * i + 0];
     d1 = y[11 * i + 1];
@@ -7855,6 +7977,7 @@ void bcsr_11x3(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, x0, x1, x2;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[11 * i + 0];
     d1 = y[11 * i + 1];
@@ -7923,6 +8046,7 @@ void bcsr_11x4(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, x0, x1, x2, x3;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[11 * i + 0];
     d1 = y[11 * i + 1];
@@ -8003,6 +8127,7 @@ void bcsr_11x5(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, x0, x1, x2, x3, x4;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[11 * i + 0];
     d1 = y[11 * i + 1];
@@ -8095,6 +8220,7 @@ void bcsr_11x6(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, x0, x1, x2, x3, x4, x5;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[11 * i + 0];
     d1 = y[11 * i + 1];
@@ -8200,6 +8326,7 @@ void bcsr_11x7(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, x0, x1, x2, x3, x4, x5,
       x6;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[11 * i + 0];
     d1 = y[11 * i + 1];
@@ -8317,6 +8444,7 @@ void bcsr_11x8(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, x0, x1, x2, x3, x4, x5,
       x6, x7;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[11 * i + 0];
     d1 = y[11 * i + 1];
@@ -8446,6 +8574,7 @@ void bcsr_11x9(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, x0, x1, x2, x3, x4, x5,
       x6, x7, x8;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[11 * i + 0];
     d1 = y[11 * i + 1];
@@ -8587,6 +8716,7 @@ void bcsr_11x10(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, x0, x1, x2, x3, x4, x5,
       x6, x7, x8, x9;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[11 * i + 0];
     d1 = y[11 * i + 1];
@@ -8740,6 +8870,7 @@ void bcsr_11x11(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, x0, x1, x2, x3, x4, x5,
       x6, x7, x8, x9, x10;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[11 * i + 0];
     d1 = y[11 * i + 1];
@@ -8905,6 +9036,7 @@ void bcsr_11x12(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, x0, x1, x2, x3, x4, x5,
       x6, x7, x8, x9, x10, x11;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[11 * i + 0];
     d1 = y[11 * i + 1];
@@ -9081,6 +9213,7 @@ void bcsr_12x1(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, x0;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[12 * i + 0];
     d1 = y[12 * i + 1];
@@ -9128,6 +9261,7 @@ void bcsr_12x2(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, x0, x1;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[12 * i + 0];
     d1 = y[12 * i + 1];
@@ -9188,6 +9322,7 @@ void bcsr_12x3(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, x0, x1, x2;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[12 * i + 0];
     d1 = y[12 * i + 1];
@@ -9261,6 +9396,7 @@ void bcsr_12x4(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, x0, x1, x2, x3;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[12 * i + 0];
     d1 = y[12 * i + 1];
@@ -9347,6 +9483,7 @@ void bcsr_12x5(const int &bm, const int *b_row_start, const int *b_col_idx,
                const double *b_values, const double *x, double *y) {
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, x0, x1, x2, x3, x4;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[12 * i + 0];
     d1 = y[12 * i + 1];
@@ -9447,6 +9584,7 @@ void bcsr_12x6(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, x0, x1, x2, x3, x4,
       x5;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[12 * i + 0];
     d1 = y[12 * i + 1];
@@ -9560,6 +9698,7 @@ void bcsr_12x7(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, x0, x1, x2, x3, x4,
       x5, x6;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[12 * i + 0];
     d1 = y[12 * i + 1];
@@ -9686,6 +9825,7 @@ void bcsr_12x8(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, x0, x1, x2, x3, x4,
       x5, x6, x7;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[12 * i + 0];
     d1 = y[12 * i + 1];
@@ -9825,6 +9965,7 @@ void bcsr_12x9(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, x0, x1, x2, x3, x4,
       x5, x6, x7, x8;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[12 * i + 0];
     d1 = y[12 * i + 1];
@@ -9977,6 +10118,7 @@ void bcsr_12x10(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, x0, x1, x2, x3, x4,
       x5, x6, x7, x8, x9;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[12 * i + 0];
     d1 = y[12 * i + 1];
@@ -10142,6 +10284,7 @@ void bcsr_12x11(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, x0, x1, x2, x3, x4,
       x5, x6, x7, x8, x9, x10;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[12 * i + 0];
     d1 = y[12 * i + 1];
@@ -10320,6 +10463,7 @@ void bcsr_12x12(const int &bm, const int *b_row_start, const int *b_col_idx,
   int i, j;
   double d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, x0, x1, x2, x3, x4,
       x5, x6, x7, x8, x9, x10, x11;
+#pragma omp parallel for
   for (i = 0; i < bm; ++i) {
     d0 = y[12 * i + 0];
     d1 = y[12 * i + 1];
