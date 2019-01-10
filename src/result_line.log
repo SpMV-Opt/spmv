@@ -1,4 +1,4 @@
-0.012s
+/root/spmv/data/test_matrices/lp_osa_60_linear.mtx: bcsr_1x2, wall time: 0.012000s, L3 cache miss ratio: 13964128495768700.000%, FLOPS:4361373.000000
 /root/spmv/data/test_matrices/lp_osa_60_linear.mtx: bcsr_1x2, wall time: 0.006566s, L3 cache miss ratio: 13964128495768700.000%, FLOPS:4361373.000000
 /root/spmv/data/test_matrices/lp_osa_60_linear.mtx: bcsr_1x3, wall time: 0.006345s, L3 cache miss ratio: 14041404720485500.000%, FLOPS:4361373.000000
 /root/spmv/data/test_matrices/lp_osa_60_linear.mtx: bcsr_1x4, wall time: 0.006920s, L3 cache miss ratio: 14006420015666300.000%, FLOPS:4361373.000000

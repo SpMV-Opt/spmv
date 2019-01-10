@@ -874,23 +874,27 @@ void bcsr_3x1(const int &bm, const int *b_row_start, const int *b_col_idx,
 void bcsr_3x2(const int &bm, const int *b_row_start, const int *b_col_idx,
               const double *b_values, const double *x, double *y) {
   int i, j;
-  double d0, d1, d2, x0, x1;
+  double y0, y1, y2, x0, x1;
+  // loops over bm blocks rows
   for (i = 0; i < bm; ++i) {
-    d0 = y[3 * i + 0];
-    d1 = y[3 * i + 1];
-    d2 = y[3 * i + 2];
+    // scalar replacement for reuse
+    y0 = y[3 * i + 0];
+    y1 = y[3 * i + 1];
+    y2 = y[3 * i + 2];
+    // dense micro MVM
     for (j = b_row_start[i]; j < b_row_start[i + 1]; ++j, b_values += 3 * 2) {
+      // scalar replacement for reuse
       x0 = x[2 * b_col_idx[j] + 0];
       x1 = x[2 * b_col_idx[j] + 1];
-      d0 += b_values[0] * x0;
-      d1 += b_values[2] * x0;
-      d2 += b_values[4] * x0;
-      d0 += b_values[1] * x1;
-      d1 += b_values[3] * x1;
-      d2 += b_values[5] * x1;
-      y[3 * i + 0] = d0;
-      y[3 * i + 1] = d1;
-      y[3 * i + 2] = d2;
+      y0 += b_values[0] * x0;
+      y1 += b_values[2] * x0;
+      y2 += b_values[4] * x0;
+      y0 += b_values[1] * x1;
+      y1 += b_values[3] * x1;
+      y2 += b_values[5] * x1;
+      y[3 * i + 0] = y0;
+      y[3 * i + 1] = y1;
+      y[3 * i + 2] = y2;
     }
   }
 }
