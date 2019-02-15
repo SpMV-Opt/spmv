@@ -92,13 +92,13 @@ emit_func_tail() {
 echo "Begin to generate kernel..."
 file_gen
 <<!
-for i in `seq 1 12`
+for _i in `seq 1 12`
 do
-    for j in `seq 1 12`
+    for _j in `seq 1 12`
     do
-        echo ${i} ${j}
-        emit_func_header ${i} ${j}
-        emit_func_body ${i} ${j}
+        echo ${_i} ${_j}
+        emit_func_header ${_i} ${_j}
+        emit_func_body ${_i} ${_j}
         emit_func_tail
         echo >>${KERNEL_SRC}
     done
