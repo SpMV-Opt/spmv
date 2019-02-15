@@ -36,6 +36,7 @@ emit_func_body() {
     echo "double" >>${KERNEL_SRC}
 
     local m=$(( ${R} - 1 ))
+    local i
     # emit d0, d1, ..., d(r-1), x0, x1, ..., x(c-1)
     for i in `seq 0 $m`
     do
